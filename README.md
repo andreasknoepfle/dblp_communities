@@ -3,10 +3,10 @@
 Dependencies:
 ------------
 Before Running the installer please install the following dependencies.
-  * java
-  * maven2
-  * unzip
-  * g++
+  * [java]
+  * [maven2]
+  * [unzip]
+  * [g++]
 
 Installation:
 ------------
