@@ -8,10 +8,25 @@ import org.xml.sax.helpers.*;
 
 public class Parser {
 
+	/** 
+	 * How found authors (names) map to their ids
+	 */
 	private HashMap<String, Integer> authorMappings;
+	/**
+	 * Parser storage - tempurary saves the authors of a parsed publication
+	 */
 	private HashSet<Integer> authorsOnPublication;
-	private HashMap<Integer, HashMap<Integer, Integer>> relations;
+	/**
+	 * Stores relations of the author ids 
+	 */
+	private HashMap<Integer, HashMap<Integer, HashSet<Integer>>> relations;
+	/**
+	 * author id counter
+	 */
 	private int authorNumber = 0;
+	private int minYear=Integer.MAX_VALUE;
+	private int maxYear=Integer.MIN_VALUE;
+	private int pubYear;
 
 	private class ConfigHandler extends DefaultHandler {
 
@@ -20,13 +35,13 @@ public class Parser {
 		private String recordTag;
 
 		
-		private boolean insidePerson;
+		private boolean insideTag;
 
 		public void startElement(String namespaceURI, String localName,
 				String rawName, Attributes atts) throws SAXException {
 			
-			if (insidePerson = (rawName.equals("author") || rawName
-					.equals("editor"))) {
+			if (insideTag = (rawName.equals("author") || rawName
+					.equals("editor")) || rawName.equals("year")) {
 				Value = "";
 				return;
 			}
@@ -38,9 +53,7 @@ public class Parser {
 		public void endElement(String namespaceURI, String localName,
 				String rawName) throws SAXException {
 			if (rawName.equals("author") || rawName.equals("editor")) {
-				if(Value.startsWith("Joachim")) {
-					System.out.print("");
-				}
+			
 				// Author gefunden "Value"
 				if (authorMappings.get(Value) == null) {
 					Integer author_id=new Integer(authorNumber);
@@ -52,6 +65,15 @@ public class Parser {
 				}
 
 			}
+			if(rawName.equals("year")) {
+				pubYear=Integer.parseInt(Value);
+				if(pubYear>maxYear) {
+					maxYear=pubYear;
+				}
+				if(pubYear<minYear) {
+					minYear=pubYear;
+				}
+			}
 			if (rawName.equals(recordTag)) {
 				// Record Tag gefunden fuege tmp personen zusammen
 				for (Integer author_from : authorsOnPublication) {
@@ -59,17 +81,20 @@ public class Parser {
 						// Verbindung nur in eine Richtung werten und nicht mit sich selber verbinden
 						if (author_from < author_to) {
 							if (relations.containsKey(author_from)) {
-								HashMap<Integer, Integer> author_from_map = relations
+								HashMap<Integer, HashSet<Integer>> author_from_map = relations
 										.get(author_from);
 								if (author_from_map.containsKey(author_to)) {
-									author_from_map.put(author_to, author_from_map
-											.get(author_to) + 1);
+									author_from_map.get(author_to).add(pubYear);
 								} else {
-									author_from_map.put(author_to, new Integer(1));
+									HashSet<Integer> pub=new HashSet<Integer>();
+									pub.add(pubYear);
+									author_from_map.put(author_to, pub);
 								}
 							} else {
-								HashMap<Integer,Integer> relation=new HashMap<Integer,Integer>();
-								relation.put(author_to, new Integer(1));
+								HashMap<Integer,HashSet<Integer>> relation=new HashMap<Integer,HashSet<Integer>>();
+								HashSet<Integer> pub=new HashSet<Integer>();
+								pub.add(pubYear);
+								relation.put(author_to, pub);
 								relations.put(author_from, relation);
 							}
 							
@@ -82,7 +107,7 @@ public class Parser {
 
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
-			if (insidePerson)
+			if (insideTag)
 				Value += new String(ch, start, length);
 		}
 
@@ -111,10 +136,10 @@ public class Parser {
 		}
 	}
 
-	Parser(String uri) {
+	public Parser(String uri) {
 		authorMappings=new  HashMap<String, Integer>();
 		authorsOnPublication=new HashSet<Integer>();
-		relations=new HashMap<Integer, HashMap<Integer,Integer>>();
+		relations=new HashMap<Integer, HashMap<Integer,HashSet<Integer>>>();
 		try {
 			SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 			SAXParser parser = parserFactory.newSAXParser();
@@ -133,7 +158,7 @@ public class Parser {
 
 	}
 
-	public HashMap<Integer, HashMap<Integer, Integer>> getRelations() {
+	public HashMap<Integer, HashMap<Integer, HashSet<Integer>>> getRelations() {
 		return relations;
 	}
 
@@ -142,26 +167,42 @@ public class Parser {
 		return authorMappings;
 	}
 
+
+
+	public int getMinYear() {
+		return minYear;
+	}
+
+	public int getMaxYear() {
+		return maxYear;
+	}
+
+	public void printRelations(PrintStream s) {
+		for (Integer author_from : relations.keySet()) {
+			for(Integer author_to :relations.get(author_from).keySet()) {
+				s.print(author_from);
+				s.print(" ");
+				s.print(author_to);
+				s.print(" ");
+				s.print(relations.get(author_from).get(author_to).size());
+				s.println();
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.err.println("Usage: java -jar dblp_communities.jar [input]");
 			System.exit(0);
 		}
 		Parser p = new Parser(args[0]);
-		HashMap<Integer,HashMap<Integer,Integer>> relations=p.getRelations();
-		for (Integer author_from : relations.keySet()) {
-			for(Integer author_to :relations.get(author_from).keySet()) {
-				System.out.print(author_from);
-				System.out.print(" ");
-				System.out.print(author_to);
-				System.out.print(" ");
-				System.out.print(relations.get(author_from).get(author_to));
-				System.out.println();
-			}
-		}
+		p.printRelations(System.out);
 		HashMap<String, Integer> authors=p.getAuthorMappings();
 		for (String key : authors.keySet()) {
 			System.err.println(authors.get(key)+ " --> "+ key);
 		}
+		System.out.println("Min Year: " + p.getMinYear());
+		System.out.println("Max Year: " + p.getMaxYear());
+	
 	}
 }

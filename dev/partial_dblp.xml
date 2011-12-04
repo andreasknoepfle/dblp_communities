@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+<article mdate="2002-01-03" key="persons/Codd71a">
+<author>E. F. Codd</author>
+<title>Further Normalization of the Data Base Relational Model.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<volume>RJ909</volume>
+<month>August</month>
+<year>1971</year>
+<cdrom>ibmTR/rj909.pdf</cdrom>
+<ee>db/labs/ibm/RJ909.html</ee>
+</article>
+
+<article mdate="2002-01-03" key="persons/Hall74">
+<author>Patrick A. V. Hall</author>
+<title>Common Subexpression Identification in General Algebraic Systems.</title>
+<journal>Technical Rep. UKSC 0060, IBM United Kingdom Scientific Centre</journal>
+<month>November</month>
+<year>1974</year>
+</article>
+
+<article mdate="2002-01-03" key="persons/Tresch96">
+<author>Markus Tresch</author>
+<title>Principles of Distributed Object Database Languages.</title>
+<journal>technical Report 248, ETH Z&uuml;rich, Dept. of Computer Science</journal>
+<month>July</month>
+<year>1996</year>
+</article>
+
+<article mdate="2002-01-03" key="persons/CoddD74">
+<author>E. F. Codd</author>
+<author>C. J. Date</author>
+<title>Interactive Support for Non-Programmers: The Relational and Network Approaches.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<volume>RJ1400</volume>
+<month>June</month>
+<year>1974</year>
+</article>
+
+<www mdate="2005-10-06" key="persons/Ley2003">
+<author>Michael Ley</author>
+<title>ACM SIGMOD Contribution Award 2003 Acceptance Speech</title>
+<year>2003</year>
+<url>http://www.informatik.uni-trier.de/~ley/db/about/contributionaward03.html</url>
+</www>
+
+<inproceedings mdate="2002-01-03" key="persons/JohnLM94">
+<author>Werner John</author>
+<author>Dominik Ley</author>
+<author>Joachim M&uuml;ller</author>
+<title>ROSAR - Rule Oriented System for Analysis of Reflections on Printed Circuit Boards</title>
+<pages>40-43</pages>
+<year>1994</year>
+<booktitle>Proc. 11th Int. Symposium on Electromagnetic Compatibility (EMC'94)</booktitle>
+</inproceedings>
+<article mdate="2002-01-03" key="persons/Codd71">
+<author>E. F. Codd</author>
+<title>Data Base Sublanguage Founded on the Relational Calculus.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<month>July</month>
+<volume>RJ893</volume>
+<year>1971</year>
+</article>
+
+<article mdate="2002-01-03" key="persons/Codd72">
+<author>E. F. Codd</author>
+<title>Relational Completeness of Data Base Sublanguages.</title>
+<journal>In: R. Rustin (ed.): Database Systems: 65-98, Prentice Hall and IBM Research Report RJ 987, San Jose, California</journal>
+<month>March</month>
+<year>1972</year>
+<cdrom>ibmTR/rj987.pdf</cdrom>
+<ee>db/labs/ibm/RJ987.html</ee>
+</article>
+
+<article mdate="2002-01-03" key="persons/Codd69">
+<author>E. F. Codd</author>
+<title>Derivability, Redundancy and Consistency of Relations Stored in Large Data Banks.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<volume>RJ599</volume>
+<month>August</month>
+<year>1969</year>
+<cdrom>ibmTR/rj599.pdf</cdrom>
+<ee>db/labs/ibm/RJ599.html</ee>
+</article>
+
+<www mdate="2005-10-06" key="persons/Ley93">
+<author>Michael Ley</author>
+<title>DBLP.uni-trier.de: Computer Science Bibliography</title>
+<url>http://dblp.uni-trier.de/</url>
+<year>1993</year>
+</www>
+
+<article mdate="2002-01-03" key="persons/Codd81">
+<author>E. F. Codd</author>
+<title>The Capabilities of Relational Database Management Systems.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<month>May</month>
+<year>1981</year>
+<volume>RJ3132</volume>
+<cdrom>ibmTR/rj3132.pdf</cdrom>
+<ee>db/labs/ibm/RJ3132.html</ee>
+</article>
+
+<article mdate="2002-01-03" key="persons/Ley95">
+<author>Michael Ley</author>
+<title>DB&amp;LP: A WWW Bibliography on Databases and Logic Programming</title>
+<journal>Compulog Newsletter</journal>
+<year>1995</year>
+<url>http://www.informatik.uni-trier.de/~ley/db/about/compulog.ps</url>
+</article>
+
+<book mdate="2007-01-12" key="persons/Lions1996">
+<author>John Lions</author>
+<title>Lions' Commentary on UNIX 6th Edition, with Source Code</title>
+<year>1996</year>
+<publisher>Peer-to-Peer Communications</publisher>
+<isbn>1-57398-013-7</isbn>
+<url>http://www.lemis.com/grog/Documentation/Lions/index.html</url>
+</book>
+
+<inproceedings mdate="2002-01-03" key="persons/Codd74">
+<author>E. F. Codd</author>
+<title>Seven Steps to Rendezvous with the Casual User.</title>
+<month>January</month>
+<year>1974</year>
+<pages>179-200</pages>
+<booktitle>IFIP Working Conference Data Base Management</booktitle>
+<url>db/conf/ds/dbm74.html#Codd74</url>
+<note>IBM Research Report RJ 1333, San Jose, California</note>
+<cdrom>DS/DS1974/P179.pdf</cdrom>
+<ee>db/conf/ds/Codd74.html</ee>
+</inproceedings>
+
+<article mdate="2002-01-03" key="persons/Codd71b">
+<author>E. F. Codd</author>
+<title>Normalized Data Base Structure: A Brief Tutorial.</title>
+<journal>IBM Research Report, San Jose, California</journal>
+<month>November</month>
+<year>1971</year>
+<volume>RJ935</volume>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI92-14">
+<author>Klaus Jansen</author>
+<title>One Strike Against the Min-Max Degree Triangulation Problem</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>92-14</volume>
+<year>1992</year>
+<note>informal publication</note>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI96-17">
+<author>Manfred Laumen</author>
+<title>Structured PSB-Update for Optimal Shape Design Problems</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>96-17</volume>
+<year>1996</year>
+<note>informal publication</note>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI94-13">
+<author>Reiner Horst</author>
+<author>Nguyen V. Thoai</author>
+<title>An Integer Concave Minimization Approach for the Minimum Concave Cost Capacitated Flow Problem on Networks</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>94-13</volume>
+<year>1994</year>
+<note>informal publication</note>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI97-04">
+<author>Reiner Horst</author>
+<author>L. D. Muu</author>
+<author>Nguyen V. Thoai</author>
+<title>A Decomposition Algorithm for Optimization over Efficient Sets</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>97-04</volume>
+<year>1997</year>
+<note>informal publication</note>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI94-17">
+<author>Christoph Meinel</author>
+<author>Anna Slobodov&aacute;</author>
+<title>A Unifying Theoretical Background for Some BDD-based Data Structures</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>94-17</volume>
+<year>1994</year>
+<note>informal publication</note>
+</article>
+
+<article mdate="2008-01-07" key="tr/trier/MI92-15">
+<author>Klaus Jansen</author>
+<title>On the Complexity of a Licence Constrained Job Assignment Problem</title>
+<journal>Universit&auml;t Trier, Mathematik/Informatik, Forschungsbericht</journal>
+<volume>92-15</volume>
+<year>1992</year>
+<note>informal publication</note>
+</article>
+</dblp>
+
+
