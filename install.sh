@@ -10,16 +10,18 @@ dblp_dir="./dblp"
 #Skript
 
 echo "Getting Remote Resources"
-if [ ! -f $zip ]; then
-echo "Downloading Community Detection Algorithm from $url"
-wget $url$zip
-fi
-if [ -f $i ]; then 
+if [ ! -d $filename ]; then
+  if [ ! -f $zip ]; then
+   echo "Downloading Community Detection Algorithm from $url"
+   wget $url$zip
+  fi
+  if [ -f $zip ]; then 
     unzip -o $zip
     rm $zip 
-else
+  else
     echo "Could not download $url$zip ... Download it manually and put it here."
     exit -1
+  fi
 fi
 cd $filename
 make
