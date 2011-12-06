@@ -13,7 +13,7 @@ echo "Getting Remote Resources"
 if [ ! -d $filename ]; then
   if [ ! -f $zip ]; then
    echo "Downloading Community Detection Algorithm from $url"
-   wget $url$zip
+   wget --no-check-certificate --secure-protocol=auto $url$zip
   fi
   if [ -f $zip ]; then 
     unzip -o $zip
