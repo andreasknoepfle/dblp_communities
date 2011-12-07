@@ -1,31 +1,40 @@
 package dblp.communities.parser;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.neo4j.graphdb.Node;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import dblp.communities.db_interface.DBConnector;
 
 public class Parser {
 
 	/**
 	 * How found authors (names) map to their ids
 	 */
-	private HashMap<String, Integer> authorMappings;
+	private HashMap<String, Long> authorMappings;
 	/**
 	 * Parser storage - tempurary saves the authors of a parsed publication
 	 */
-	private HashSet<Integer> authorsOnPublication;
+	private HashSet<Long> authorsOnPublication;
 	/**
 	 * Stores relations of the author ids
 	 * year>author_from>author_to>num_publications
 	 */
-	private HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> relations;
-	/**
-	 * author id counter
-	 */
-	private int authorNumber = 0;
+	private HashMap<Integer, HashMap<Long, HashMap<Long, Integer>>> relations;
+	
 	// Year Splitting MetaInfo
 	private int minYear = Integer.MAX_VALUE;
 	private int maxYear = Integer.MIN_VALUE;
@@ -37,6 +46,12 @@ public class Parser {
 	 * Split Result into X parts sorted after the year
 	 */
 	private int yearSplitter;
+	/**
+	 * Neo4J Connector
+	 * 
+	 */
+	private DBConnector dbconnector;
+	private long authorNumber=0;
 
 	private class ConfigHandler extends DefaultHandler {
 
@@ -45,6 +60,7 @@ public class Parser {
 		private String recordTag;
 
 		private boolean insideTag;
+		
 
 		public void startElement(String namespaceURI, String localName,
 				String rawName, Attributes atts) throws SAXException {
@@ -66,10 +82,17 @@ public class Parser {
 
 				// Author gefunden "Value"
 				if (authorMappings.get(Value) == null) {
-					Integer author_id = new Integer(authorNumber);
+					Long author_id;
+					if(dbconnector!=null) {
+						Node n=dbconnector.createAuthor(Value);
+						author_id = n.getId();
+					} else {
+						author_id = authorNumber;
+						authorNumber++;
+					}
 					authorMappings.put(Value, author_id);
 					authorsOnPublication.add(author_id);
-					authorNumber++;
+					
 				} else {
 					authorsOnPublication.add(authorMappings.get(Value));
 				}
@@ -86,38 +109,48 @@ public class Parser {
 			}
 			if (rawName.equals(recordTag)) {
 				// Record Tag gefunden fuege tmp personen zusammen
-				for (Integer author_from : authorsOnPublication) {
-					for (Integer author_to : authorsOnPublication) {
+				for (Long author_from : authorsOnPublication) {
+					for (Long author_to : authorsOnPublication) {
 						
 						// Verbindung nur in eine Richtung werten und nicht mit
 						// sich selber verbinden
 						if (author_from < author_to) {
 							if (!relations.containsKey(pubYear)) {
-								HashMap<Integer, HashMap<Integer, Integer>> newYear = new HashMap<Integer, HashMap<Integer, Integer>>();
+								HashMap<Long, HashMap<Long, Integer>> newYear = new HashMap<Long, HashMap<Long, Integer>>();
 								relations.put(pubYear, newYear);
 							}
 							if (relations.get(pubYear).containsKey(author_from)) {
-								HashMap<Integer, Integer> author_from_map = relations
+								HashMap<Long, Integer> author_from_map = relations
 										.get(pubYear).get(author_from);
 								if (author_from_map.containsKey(author_to)) {
 									author_from_map.put(author_to,
 											author_from_map.get(author_to) + 1);
+									if(dbconnector!=null) {
+										dbconnector.addPublicationYear(author_from, author_to, pubYear);
+									}
 								} else {
 									author_from_map.put(author_to, new Integer(
 											1));
+									if(dbconnector!=null) {
+										dbconnector.createPublication(author_from, author_to,pubYear);
+									}
 								}
 							} else {
-								HashMap<Integer, Integer> relation = new HashMap<Integer, Integer>();
+								HashMap<Long, Integer> relation = new HashMap<Long, Integer>();
 
 								relation.put(author_to, new Integer(1));
 								relations.get(pubYear).put(author_from,
 										relation);
+								if(dbconnector!=null) {
+									dbconnector.createPublication(author_from, author_to,pubYear);
+								}
 							}
 
 						}
 					}
 				}
-				// Eintragen in Neo4J
+			
+				
 				authorsOnPublication.clear();
 			}
 		}
@@ -153,15 +186,13 @@ public class Parser {
 		}
 	}
 
-	public Parser(String uri) {
-		this(uri, 0);
-	}
 
-	public Parser(String uri, int splitter) {
+	public Parser(String uri, int splitter, DBConnector connector) {
 
-		authorMappings = new HashMap<String, Integer>();
-		authorsOnPublication = new HashSet<Integer>();
-		relations = new HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>>();
+		dbconnector=connector;
+		authorMappings = new HashMap<String, Long>();
+		authorsOnPublication = new HashSet<Long>();
+		relations = new HashMap<Integer, HashMap<Long, HashMap<Long, Integer>>>();
 		yearSplitter = splitter;
 		try {
 			SAXParserFactory parserFactory = SAXParserFactory.newInstance();
@@ -181,11 +212,11 @@ public class Parser {
 
 	}
 
-	public HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> getRelations() {
+	public HashMap<Integer, HashMap<Long, HashMap<Long, Integer>>> getRelations() {
 		return relations;
 	}
 
-	public HashMap<String, Integer> getAuthorMappings() {
+	public HashMap<String, Long> getAuthorMappings() {
 		return authorMappings;
 	}
 
@@ -220,8 +251,8 @@ public class Parser {
 					fileNum = pieceNum;
 				}
 
-				for (Integer author_from : relations.get(year).keySet()) {
-					for (Integer author_to : relations.get(year).get(
+				for (Long author_from : relations.get(year).keySet()) {
+					for (Long author_to : relations.get(year).get(
 							author_from).keySet()) {
 						p.print(author_from);
 						p.print(" ");
@@ -237,14 +268,22 @@ public class Parser {
 	}
 
 	public static void main(String[] args) {
+		String dbPath = null;
+		DBConnector connector=null;
+		if(args.length==4) {
+			dbPath=args[3];
+			File f=new File(dbPath);
+			System.out.println(f.getAbsolutePath());
+			connector=DBConnector.getInstance("/home/andi/dblp_communities/dblp/neo4j");
+		}
+		
 		Parser p = null;
-		if (args.length < 1) {
+		if (args.length < 3) {
 			System.err
-					.println("Usage: java -jar dblp_communities.jar [input] [output-folder] [[splitter]] ");
+					.println("Usage: java -jar dblp_communities.jar [input] [output-folder] [splitter] [[db-path]]");
 			System.exit(0);
-		} else if (args.length == 2) {
-			p = new Parser(args[0]);
-		} else if (args.length == 3) {
+		
+		} else  {
 			int splitter = 0;
 			try {
 				splitter = Integer.valueOf(args[2]);
@@ -252,8 +291,10 @@ public class Parser {
 				System.err.println("Use an Integer splitter!");
 				System.exit(0);
 			}
-			p = new Parser(args[0], splitter);
+			p = new Parser(args[0], splitter,connector);
 		}
+		
+		
 		System.out.println("Printing community algorithm files.");
 		File input = new File(args[1]);
 

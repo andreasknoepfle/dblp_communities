@@ -38,6 +38,10 @@ if [ ! -f $dblp_dtd ]; then
 wget $dblp_server$dblp_dtd
 fi
 cd ..
+cd db_interface
+mvn clean
+mvn install
+cd ..
 cd parser 
 mvn clean
 mvn package
