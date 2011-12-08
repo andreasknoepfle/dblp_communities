@@ -1,6 +1,6 @@
-community="dblp/community-input"
-neo4j="dblp/neo4j"
-dblp="dblp/dblp.xml"
+community="dblp-out/community-input"
+neo4j="dblp-out/neo4j"
+dblp="dblp-out/dblp.xml"
 if [ $# -eq 1 ];
 then
   dblp=$1
