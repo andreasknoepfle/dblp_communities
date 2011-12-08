@@ -11,13 +11,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.neo4j.graphdb.Node;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import dblp.communities.db_interface.DBConnector;
+import dblp.communities.db_interface.DBBatchInserter;
+import dblp.communities.db_interface.IDBConnector;
 
 public class Parser {
 
@@ -50,7 +50,7 @@ public class Parser {
 	 * Neo4J Connector
 	 * 
 	 */
-	private DBConnector dbconnector;
+	private IDBConnector dbconnector;
 	private long authorNumber=0;
 
 	private class ConfigHandler extends DefaultHandler {
@@ -84,8 +84,8 @@ public class Parser {
 				if (authorMappings.get(Value) == null) {
 					Long author_id;
 					if(dbconnector!=null) {
-						Node n=dbconnector.createAuthor(Value);
-						author_id = n.getId();
+					
+						author_id = dbconnector.createAuthor(Value);
 					} else {
 						author_id = authorNumber;
 						authorNumber++;
@@ -125,15 +125,10 @@ public class Parser {
 								if (author_from_map.containsKey(author_to)) {
 									author_from_map.put(author_to,
 											author_from_map.get(author_to) + 1);
-									if(dbconnector!=null) {
-										dbconnector.addPublicationYear(author_from, author_to, pubYear);
-									}
+									
 								} else {
 									author_from_map.put(author_to, new Integer(
 											1));
-									if(dbconnector!=null) {
-										dbconnector.createPublication(author_from, author_to,pubYear);
-									}
 								}
 							} else {
 								HashMap<Long, Integer> relation = new HashMap<Long, Integer>();
@@ -141,9 +136,6 @@ public class Parser {
 								relation.put(author_to, new Integer(1));
 								relations.get(pubYear).put(author_from,
 										relation);
-								if(dbconnector!=null) {
-									dbconnector.createPublication(author_from, author_to,pubYear);
-								}
 							}
 
 						}
@@ -187,7 +179,7 @@ public class Parser {
 	}
 
 
-	public Parser(String uri, int splitter, DBConnector connector) {
+	public Parser(String uri, int splitter, IDBConnector connector) {
 
 		dbconnector=connector;
 		authorMappings = new HashMap<String, Long>();
@@ -228,8 +220,11 @@ public class Parser {
 		return maxYear;
 	}
 
+	
+	
 	public void printRelations(File parent) throws FileNotFoundException {
-
+		PrintStream edges=new PrintStream( new File(parent,"edges"));
+		edges.println("Source;Target");
 		int fileNum = 0;
 		PrintStream p = null;
 		for (int i = 0; i <= maxYear - minYear; i++) {
@@ -254,6 +249,10 @@ public class Parser {
 				for (Long author_from : relations.get(year).keySet()) {
 					for (Long author_to : relations.get(year).get(
 							author_from).keySet()) {
+						for(int j=0;j<relations.get(year).get(author_from).get(author_to);j++) {
+							edges.println(author_from+";"+author_to);
+						}
+						
 						p.print(author_from);
 						p.print(" ");
 						p.print(author_to);
@@ -266,21 +265,35 @@ public class Parser {
 			}
 		}
 	}
+	
+	public void exportRelations() {
+		for (Integer year  : relations.keySet()) {
+			HashMap<Long, HashMap<Long, Integer>> yearRelation = relations.get(year);
+			for (Long author_from : yearRelation.keySet()) {
+				HashMap<Long, Integer> authorFromRelation = yearRelation.get(author_from);
+				for ( Long author_to : authorFromRelation.keySet()) {
+					dbconnector.createPublications(author_from, author_to, authorFromRelation.get(author_to));
+				}
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		String dbPath = null;
-		DBConnector connector=null;
-		if(args.length==4) {
+		DBBatchInserter connector=null;
+		
+		
+		if(args.length>=4) {
 			dbPath=args[3];
-			File f=new File(dbPath);
-			System.out.println(f.getAbsolutePath());
-			connector=DBConnector.getInstance("/home/andi/dblp_communities/dblp/neo4j");
+			connector=new DBBatchInserter(dbPath);
 		}
 		
+		
+		
 		Parser p = null;
-		if (args.length < 3) {
+		if (args.length < 4) {
 			System.err
-					.println("Usage: java -jar dblp_communities.jar [input] [output-folder] [splitter] [[db-path]]");
+					.println("Usage: java -jar dblp_communities.jar [input] [output-folder] [splitter:int] [[db-path]]");
 			System.exit(0);
 		
 		} else  {
@@ -291,6 +304,7 @@ public class Parser {
 				System.err.println("Use an Integer splitter!");
 				System.exit(0);
 			}
+			System.out.println("Start Parsing dblp File.");
 			p = new Parser(args[0], splitter,connector);
 		}
 		
@@ -303,6 +317,11 @@ public class Parser {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("Importing Relations to neo4j.");
+		if(connector!=null) {
+			p.exportRelations();
+		}
+		
+	
 	}
 }
