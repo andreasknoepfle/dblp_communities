@@ -32,7 +32,7 @@ public class LSP_Generator
 
     	        dbconnector = DBConnector.getInstance(args[0]);       
 
-    	        //long id = createCommunityExample(dbconnector, 3, 20);
+    	        long id = createCommunityExample(dbconnector, 3, 20);
     	
     	        getLongestShortestPath(dbconnector, Long.valueOf(args[1]));
     	          
@@ -128,19 +128,19 @@ public class LSP_Generator
     		long id_c = connector.createCommunity();
     		connector.belongsTo(connector.getGraphDb().getNodeById(id_c), connector.getGraphDb().getNodeById(id_root));
     		
-    		for(int j = 0; j< authors; j++){
+    		for(int j = 0; j< authors*(i+1); j++){
     			long id_a = connector.createAuthor("author"+i+j);
     			al_auths.add(id_a);
     			connector.belongsTo(connector.getGraphDb().getNodeById(id_a), connector.getGraphDb().getNodeById(id_c));
     		}
     		
-    		for(int k = 0; k< authors;k++){
+    		for(int k = 0; k < authors*(i+1)-1;k++){
     			
     			try{
     				
     				Random randomGenerator = new Random();
-    				int auth1 = randomGenerator.nextInt(al_auths.size());
-    				int auth2 = randomGenerator.nextInt(al_auths.size());
+    				int auth1 = k;//randomGenerator.nextInt(al_auths.size());
+    				int auth2 = k+1;randomGenerator.nextInt(al_auths.size());
     			   
     				if(auth1 != auth2)
     				   connector.createPublications(al_auths.get(auth1), al_auths.get(auth2),1);
