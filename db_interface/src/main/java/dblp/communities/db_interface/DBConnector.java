@@ -52,15 +52,13 @@ public class DBConnector implements IDBConnector {
 		return rel.getId();
 	}
 	
-	public Long authorToCommunity(Long author,Long community){
+	public Long belongsTo(Node node , Node superNode){
 		
 		Transaction tx = graphDb.beginTx();
 		Relationship rel;
 		try {
-			Node author_node = graphDb.getNodeById(author);
-			Node community_node = graphDb.getNodeById(community);
 			
-			rel=author_node.createRelationshipTo( community_node, AuthorGraphRelationshipType.BELONGS_TO );
+			rel=node.createRelationshipTo( superNode, AuthorGraphRelationshipType.BELONGS_TO );
 			
 			tx.success();
 			
