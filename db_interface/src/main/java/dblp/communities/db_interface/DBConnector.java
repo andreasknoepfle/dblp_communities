@@ -52,6 +52,24 @@ public class DBConnector implements IDBConnector {
 		return rel.getId();
 	}
 	
+	public Long authorToCommunity(Long author,Long community){
+		
+		Transaction tx = graphDb.beginTx();
+		Relationship rel;
+		try {
+			Node author_node = graphDb.getNodeById(author);
+			Node community_node = graphDb.getNodeById(community);
+			
+			rel=author_node.createRelationshipTo( community_node, AuthorGraphRelationshipType.BELONGS_TO );
+			
+			tx.success();
+			
+		} finally {
+			tx.finish();
+		}
+		return rel.getId();
+	}
+	
 	
 	
 	public void removeAllNodesAndRelations(){
@@ -100,6 +118,21 @@ public class DBConnector implements IDBConnector {
 		} finally {
 			tx.finish();
 		}
+	}
+	
+	public Long createCommunity(){
+		Node node = null;
+		Transaction tx = graphDb.beginTx();
+		try {
+			
+			node = graphDb.createNode();
+		
+			tx.success();
+			
+		} finally {
+			tx.finish();
+		}
+		return node.getId();
 	}
 	
 	
