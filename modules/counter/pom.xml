@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>dblp.communities</groupId>
-  <artifactId>lsp_generator</artifactId>
+  <artifactId>counter</artifactId>
   <version>1.0</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,11 +23,11 @@
         <descriptorRefs>
           <descriptorRef>jar-with-dependencies</descriptorRef>
         </descriptorRefs>
- 	<finalName>lsp_generator-with-deps</finalName>
+ 	<finalName>counter-with-deps</finalName>
         <appendAssemblyId>false</appendAssemblyId>
         <archive>
           <manifest>
-            <mainClass>dblp.communities.shortestPath.LSP_Generator</mainClass>
+            <mainClass>dblp.communities.counter.Counter</mainClass>
           </manifest>
         </archive>
       </configuration>

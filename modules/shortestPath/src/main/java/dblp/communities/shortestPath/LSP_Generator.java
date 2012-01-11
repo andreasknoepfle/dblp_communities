@@ -80,7 +80,7 @@ public class LSP_Generator
         	    		
     	    			Relationship r2 = rel_authors2.iterator().next ();
         	    		Path shortestPath = finder.findSinglePath(r.getStartNode(), r2.getStartNode() );
-        	    		
+
         	    		if(shortestPath != null && shortestPath.length() > tmp_longestShortestPath){
         	    			tmp_longestShortestPath = shortestPath.length();
     	    			}
