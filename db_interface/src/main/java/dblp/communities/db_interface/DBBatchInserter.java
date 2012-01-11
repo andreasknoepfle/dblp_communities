@@ -57,7 +57,6 @@ public class DBBatchInserter implements IDBConnector {
 		 properties.put("toYear", to);
 		
 		Long yearid=inserter.createNode(properties);
-		inserter.createRelationship(yearid, inserter.getReferenceNode(), AuthorGraphRelationshipType.BELONGS_TO, null);
 		return yearid;
 		
 	}
