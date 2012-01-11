@@ -6,7 +6,7 @@ url="https://sites.google.com/site/findcommunities/"
 dblp_server="http://dblp.uni-trier.de/xml/"
 dblp_xml="dblp.xml"
 dblp_dtd="dblp.dtd"
-dblp_dir="./dblp"
+dblp_dir="./dblp-out"
 #Skript
 
 echo "Getting Remote Resources"
@@ -30,7 +30,7 @@ cd ..
 echo "Creating DBLP Directory"
 mkdir -p $dblp_dir
 
-cd dblp
+cd $dblp_dir
 if [ ! -f $dblp_xml ]; then
 wget $dblp_server$dblp_xml
 fi
@@ -43,6 +43,10 @@ mvn clean
 mvn install
 cd ..
 cd parser 
+mvn clean
+mvn package
+cd ..
+cd importer 
 mvn clean
 mvn package
 cd ..

@@ -196,5 +196,45 @@ public class DBConnector implements IDBConnector {
 		});
 	}
 
+	public Node createYear(Integer from, Integer to) {
+		Node node = null;
+		Transaction tx = graphDb.beginTx();
+		try {
+			
+			node = graphDb.createNode();
+		
+			tx.success();
+			
+		} finally {
+			tx.finish();
+		}
+		tx = graphDb.beginTx();
+		try {
+			node.setProperty("fromYear", from);
+			node.setProperty("toYear", to);
+			tx.success();
+			
+		} finally {
+			tx.finish();
+		}
+		
+		return node;
+		
+	}
+
+	public void removeCommunity(Node fake) {
+		Transaction tx = graphDb.beginTx();
+		try {
+			
+			fake.delete();
+		
+			tx.success();
+			
+		} finally {
+			tx.finish();
+		}
+		
+	}
+
 	
 }
