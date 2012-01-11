@@ -6,9 +6,7 @@ import java.util.Random;
 
 import org.neo4j.graphalgo.GraphAlgoFactory;
 import org.neo4j.graphalgo.PathFinder;
-import org.neo4j.graphalgo.WeightedPath;
 import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.kernel.Traversal;
@@ -16,7 +14,6 @@ import org.neo4j.kernel.Traversal;
 
 import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBConnector;
-import dblp.communities.db_interface.IDBConnector;
 
 
 public class LSP_Generator 
@@ -32,7 +29,7 @@ public class LSP_Generator
 
     	        dbconnector = DBConnector.getInstance(args[0]);       
 
-    	        long id = createCommunityExample(dbconnector, 3, 20);
+    	        //long id = createCommunityExample(dbconnector, 3, 20);
     	
     	        getLongestShortestPath(dbconnector, Long.valueOf(args[1]));
     	          
@@ -117,7 +114,7 @@ public class LSP_Generator
     	
     }
     
-    private static long createCommunityExample(DBConnector connector, int communities, int authors){
+    /*private static long createCommunityExample(DBConnector connector, int communities, int authors){
     	
     	long id_root = connector.createCommunity();
     	
@@ -153,5 +150,6 @@ public class LSP_Generator
   
     	}
     	return id_root;
-    }
+    }*/
+    
 }
