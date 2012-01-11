@@ -1,4 +1,4 @@
-package dblp.communities.shortestPath;
+package foo;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
