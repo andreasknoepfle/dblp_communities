@@ -38,15 +38,39 @@ if [ ! -f $dblp_dtd ]; then
 wget $dblp_server$dblp_dtd
 fi
 cd ..
+
+#Interface
+
 cd db_interface
 mvn clean
 mvn install
 cd ..
+
+# Parser 
+
 cd parser 
 mvn clean
 mvn package
 cd ..
+
+#Importer
+
 cd importer 
 mvn clean
 mvn package
+cd ..
+
+# Modules
+
+cd modules
+  # Counter
+  cd counter 
+    mvn clean
+    mvn package
+  cd ..
+  #Shortest Path
+  cd shortestPath 
+    mvn clean
+    mvn package
+  cd ..
 cd ..
