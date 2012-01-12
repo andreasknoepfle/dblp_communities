@@ -24,3 +24,6 @@ then
   echo "Parse failed"
 fi
 
+sh convert.sh
+
+

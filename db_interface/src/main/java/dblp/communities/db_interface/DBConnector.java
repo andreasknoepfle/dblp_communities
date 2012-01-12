@@ -10,6 +10,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 
 
+
 public class DBConnector implements IDBConnector {
 
 	public GraphDatabaseService graphDb;
@@ -234,6 +235,42 @@ public class DBConnector implements IDBConnector {
 			tx.finish();
 		}
 		
+	}
+
+	public void setProperties(HashMap<Node, Object> properties ,String property) {
+		Transaction tx = this.getGraphDb().beginTx();
+		
+		try {
+			for (Node writenode : properties.keySet()) {
+				writenode.setProperty(property, properties.get(writenode));
+			}
+			tx.success();
+	
+		} finally {
+			tx.finish();
+		}
+	}
+
+	public void propertyImport(Map<Long,Object> nodeProperties,String property) {
+		int num = 0;
+		int totalnum = nodeProperties.size();
+		HashMap<Node, Object> properties = new HashMap<Node, Object>();
+		for (Long node : nodeProperties.keySet()) {
+			if (num % 1000 == 0 && num != 0) {
+				// Input 1000 in one Transaction
+				if (num % 10000 == 0)
+					System.out.println(num + "/" + totalnum);
+					setProperties(properties, property);
+	
+				properties.clear();
+	
+			}
+			num++;
+			// Adding to List
+			properties.put(this.getGraphDb().getNodeById(node), nodeProperties.get(node));
+		}
+		// Get the last ones
+		setProperties(properties, property);
 	}
 
 	

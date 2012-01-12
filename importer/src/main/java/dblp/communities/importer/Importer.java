@@ -14,6 +14,8 @@ import org.neo4j.graphdb.Transaction;
 import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBBatchInserter;
 import dblp.communities.db_interface.DBConnector;
+import dblp.communities.db_interface.NodePair;
+import dblp.communities.db_interface.Pair;
 
 public class Importer {
 
