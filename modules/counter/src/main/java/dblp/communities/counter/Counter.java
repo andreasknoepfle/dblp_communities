@@ -1,6 +1,7 @@
 package dblp.communities.counter;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -44,14 +45,14 @@ public class Counter {
 
 		Iterable<Relationship> rel = community.getRelationships(
 				AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
-
-		if (rel.iterator().hasNext()) {
+		Iterator<Relationship> iterator=rel.iterator();
+		if (iterator.hasNext()) {
 
 			long counter_community = 0;
 
-			while (rel.iterator().hasNext()) {
+			while (iterator.hasNext()) {
 
-				Relationship element = rel.iterator().next();
+				Relationship element = iterator.next();
 
 				long count = count(connector, element.getStartNode());
 

@@ -46,8 +46,9 @@ public class LongestShortestPathThread extends Thread {
 			Long count=(Long) relation.getStartNode().getProperty("count");
 			System.out.println("Thread: "+Thread.currentThread().getId() + " Num:"+num+ " Count:"+count);
 			
-			collect(relation.getStartNode());
-			
+			LinkedNodeList nodelist=collect(relation.getStartNode());
+			long lsp = getLSP(nodelist);
+			insert(relation.getStartNode(), lsp);
 			
 			num++;
 		}
@@ -79,8 +80,7 @@ public class LongestShortestPathThread extends Thread {
 			
 		}
 			
-		long lsp = getLSP(nodelist);
-		insert(relation.getStartNode(), lsp);
+		
 		
 		return nodelist;
 	}
@@ -95,8 +95,12 @@ public class LongestShortestPathThread extends Thread {
 		RelationshipExpander expander=new InCommunityExpander(getNodeIds(community));
 		iterator=community.getStartnode();
 		long tmp_longestShortestPath = 0;
-		
+		int num=1;
 		while(iterator!=null) {
+			if(num%10==0) {
+				System.out.println(num);
+			}
+			num++;
 			LinkedNodeListContainer iterator2=community.getStartnode();
 			Node from=iterator.getNode();
 			while(iterator2!=null) {
