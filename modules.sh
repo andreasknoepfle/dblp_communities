@@ -1,11 +1,14 @@
-#Neo4j
-neo4j="dblp-out/neo4j"
-#Modules
-counter="modules/counter/target/counter-with-deps.jar"
-shortestPath="modules/shortestPath/target/shortestPath-with-deps.jar"
-
-#Start Modules
-echo "Counter" 
-#java -mx2048M -jar $counter $neo4j 0
-echo "ShortestPath"
-java -mx2048M -jar $shortestPath $neo4j 1040444
+out="dblp-out"
+neo4j="$out/$1/neo4j"
+#All Operations
+if [ $1 = "all" ];
+then
+  sh modules/counter.sh $neo4j
+  #sh modules/lsp.sh $neo4j
+  
+fi
+#Split Operations
+if [ $1 = "split" ];
+then
+  sh modules/counter.sh $neo4j
+fi

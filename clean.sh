@@ -1,7 +1,4 @@
-converted="community-converted"
-out="community-out"
-input="community-input"
-unique="community-unique"
-neo4j="neo4j"
+split="split"
+all="all"
 cd dblp-out
-rm -rf $converted $out $input $unique $neo4j
+rm -rf $all $split

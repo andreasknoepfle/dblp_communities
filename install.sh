@@ -69,7 +69,7 @@ cd modules
     mvn package
   cd ..
   #Shortest Path
-  cd shortestPath 
+  cd lsp 
     mvn clean
     mvn package
   cd ..

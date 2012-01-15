@@ -1,10 +1,10 @@
-community_converted="dblp-out/community-converted"
-community_unique="dblp-out/community-unique"
-community_out="dblp-out/community-out"
+community_converted=$5
+community_unique=$4
+community_out=$3
 community_bin="Community_BGLL_CPP/"
-community="dblp-out/community-input"
+community=$2
 importer="importer/target/importer-with-deps.jar"
-neo4j="dblp-out/neo4j"
+neo4j=$1
 if [ ! -s $community/edges ];
 then
   echo "No input data"
@@ -13,15 +13,15 @@ fi
 
 if [ ! -d $community_out ];
 then
-	mkdir $community_out
+	mkdir -p $community_out
 fi
 if [ ! -d $community_unique ];
 then
-	mkdir $community_unique
+	mkdir -p $community_unique
 fi
 if [ ! -d $community_converted ];
 then
-	mkdir $community_converted
+	mkdir -p $community_converted
 fi
 
 for file in $community/* ; do
@@ -33,4 +33,5 @@ for file in $community/* ; do
   $community_bin/community $community_converted/$b.bin -l -1 -w > $community_out/$b.tree
   fi
 done
-java -mx2048 -jar $importer $community_out $community_unique $neo4j
+#Import Communities
+java -mx2048M -jar $importer $community_out $community_unique $neo4j
