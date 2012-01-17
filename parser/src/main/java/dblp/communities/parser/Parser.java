@@ -223,13 +223,16 @@ public class Parser {
 	
 	
 	public void printRelations(File parent) throws FileNotFoundException {
+		
 		PrintStream edges=new PrintStream( new File(parent,"edges"));
 		edges.println("Source;Target");
 		int fileNum = 0;
 		PrintStream p = null;
+		
 		for (int i = 0; i <= maxYear - minYear; i++) {
 			int year = minYear + i;
 			if (relations.containsKey(year)) {
+				
 				int pieceNum;
 				if (yearSplitter != 0) {
 					pieceNum = i / yearSplitter;

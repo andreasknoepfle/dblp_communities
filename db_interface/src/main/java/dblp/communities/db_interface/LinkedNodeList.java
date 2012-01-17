@@ -1,4 +1,4 @@
-package dblp.communities.lsp;
+package dblp.communities.db_interface;
 
 import org.neo4j.graphdb.Node;
 

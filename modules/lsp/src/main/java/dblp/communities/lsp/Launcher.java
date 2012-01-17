@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Relationship;
 
 import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBConnector;
+import dblp.communities.db_interface.LinkedNodeList;
 
 public class Launcher {
 
@@ -23,19 +24,26 @@ public class Launcher {
 				dbconnector = DBConnector.getInstance(args[0]);
 				
 				Node start=dbconnector.getGraphDb().getNodeById(Long.valueOf(args[1]));
-				//new LSPThread(start,lsps).getLongestShortestPath(start);
-				getLongestShortestPath(start,dbconnector);
+				if(start.getId()==0) {
+					getLongestShortestPath(start,dbconnector);
+					System.out.println("done");
+				} else {
+					LSP lspmodule=new LSP();
+					LinkedNodeList nodelist=DBConnector.collect(start);
+					long lsp = lspmodule.getLSP(nodelist);
+					System.out.println(lsp);
+				}
 				
-				System.out.println("done");
+				
 				
 
 			} else {
-				System.out.println("Usage: LSP_Generator <db_path> <root_id>");
+				System.out.println("Usage: LSP <db_path> <root_id>");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Usage: LSP_Generator <db_path> <root_id>");
+			System.out.println("Usage: LSP <db_path> <root_id>");
 		}
 	}
 

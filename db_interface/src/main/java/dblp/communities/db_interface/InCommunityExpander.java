@@ -13,8 +13,8 @@ public class InCommunityExpander implements RelationshipExpander {
 
 	private Collection<Long> communityNodes;
 	
-	public InCommunityExpander(Collection<Long> community) {
-		this.communityNodes=community;
+	public InCommunityExpander(Collection<Long> communityNodes) {
+		this.communityNodes=communityNodes;
 		
 	}
 	

@@ -1,15 +1,15 @@
 package dblp.communities.db_interface;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
-
-
-
 
 public class DBConnector implements IDBConnector {
 
@@ -19,6 +19,8 @@ public class DBConnector implements IDBConnector {
 		return graphDb;
 	}
 
+	
+	
 	private static Map<String,DBConnector> instances = null;
 
 	private DBConnector(String DB_PATH){
@@ -274,4 +276,47 @@ public class DBConnector implements IDBConnector {
 	}
 
 	
+
+
+
+	public static LinkedNodeList collect(Node node) {
+	
+		Iterable<Relationship> relations = node.getRelationships(
+				AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		if(!relations.iterator().hasNext()) {
+			//author node
+			return new LinkedNodeList(node);
+		} 
+		//community node
+	
+		Iterator<Relationship> iterator=relations.iterator();
+		Relationship relation=iterator.next();
+		LinkedNodeList nodelist=collect(relation.getStartNode());
+	
+	
+		//call on all children and get their communities
+		while(iterator.hasNext()) {
+			relation=iterator.next();
+			LinkedNodeList list=collect(relation.getStartNode());
+	
+			nodelist.add(list); //add to our community
+	
+		}
+		return nodelist;
+	}
+	
+	public static long isInCommunity(Node node,Set<Long> communities) {
+		Iterator<Relationship> parent=node.getRelationships(Direction.OUTGOING,AuthorGraphRelationshipType.BELONGS_TO).iterator();
+		
+		if(!parent.hasNext()) {
+			return -1;
+		}
+		Node parentnode=parent.next().getEndNode();
+		if(communities.contains(parentnode.getId())) {
+			return parentnode.getId();
+		} else {
+			return isInCommunity(parentnode, communities);
+		}
+	}
+
 }
