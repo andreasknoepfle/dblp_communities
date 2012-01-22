@@ -69,7 +69,22 @@ cd modules
     mvn package
   cd ..
   #Shortest Path
-  cd lsp 
+#  cd lsp 
+#    mvn clean
+#    mvn package
+#  cd ..
+ # Participation Coefficient & Within Module Degree
+ cd roles
+    mvn clean
+    mvn package
+ cd ..
+cd ..
+
+# Analyze
+
+cd analyze
+  #Generate Web
+  cd generateweb
     mvn clean
     mvn package
   cd ..

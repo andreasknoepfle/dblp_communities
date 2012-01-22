@@ -107,6 +107,9 @@ public class Parser {
 					minYear = pubYear;
 				}
 			}
+			if(yearSplitter==0) {
+				pubYear=0;
+			}
 			if (rawName.equals(recordTag)) {
 				// Record Tag gefunden fuege tmp personen zusammen
 				for (Long author_from : authorsOnPublication) {
@@ -231,6 +234,10 @@ public class Parser {
 		
 		for (int i = 0; i <= maxYear - minYear; i++) {
 			int year = minYear + i;
+			if(yearSplitter==0) {
+				//We have only one dataset
+				year=0;
+			}
 			if (relations.containsKey(year)) {
 				
 				int pieceNum;
@@ -265,6 +272,10 @@ public class Parser {
 						p.println();
 					}
 				}
+			}
+			if(yearSplitter==0) {
+				//If we have only one data set we are finished now
+				break;
 			}
 		}
 	}

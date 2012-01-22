@@ -13,6 +13,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class DBConnector implements IDBConnector {
 
+	public static final String WEIGHT_PROPERTY = "weight";
 	public GraphDatabaseService graphDb;
 	
 	public GraphDatabaseService getGraphDb() {
@@ -46,7 +47,7 @@ public class DBConnector implements IDBConnector {
 			Node author_to_node = graphDb.getNodeById(author_to);
 			rel=author_from_node.createRelationshipTo( author_to_node, AuthorGraphRelationshipType.PUBLICATED_TOGETHER );
 			
-			rel.setProperty("weight", weight);
+			rel.setProperty(WEIGHT_PROPERTY, weight);
 			tx.success();
 			
 		} finally {

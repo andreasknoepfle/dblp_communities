@@ -39,12 +39,20 @@ public class CalculateRoleValues extends Thread {
 		Iterator<Relationship> iterator=relations.iterator();
 		int num=1;
 		long count=0;
-		while(relations.iterator().hasNext()) {
+		HashSet<Long> all_communities_ids=new HashSet<Long>();
+		//Get Parent Node
+		while(iterator.hasNext()) {
+			all_communities_ids.add(iterator.next().getStartNode().getId());
+		}
+		relations = startnode.getRelationships(
+				AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		iterator=relations.iterator();
+		while(iterator.hasNext()) {
 			Relationship relation=iterator.next();
 			count+=(Long) relation.getStartNode().getProperty("count");
 			System.out.println("Thread: "+Thread.currentThread().getId() + " Num:"+num+ " Count:"+count);
 			   LinkedNodeList nodelist=DBConnector.collect(relation.getStartNode());
-			   calculateRoles(startnode, nodelist);
+			   calculateRoles(startnode, nodelist,all_communities_ids);
 			num++;
 		}
 		
@@ -54,7 +62,7 @@ public class CalculateRoleValues extends Thread {
 	
 
 
-	private void calculateRoles(Node startnode, LinkedNodeList nodelist) {
+	private void calculateRoles(Node startnode, LinkedNodeList nodelist,HashSet<Long> all_communities_ids) {
 		participationCoeffitient = new HashMap<Long, Object>();
 		withinModuleDegree = new HashMap<Long, Object>();
 		HashSet<Long> ids=new HashSet<Long>();
@@ -70,17 +78,7 @@ public class CalculateRoleValues extends Thread {
 		//
 		long module_degree_sum=0;
 		long module_degree_count=0;
-		StandardDeviation stddev=new StandardDeviation();
-		
-		HashSet<Long> neighbour_ids=new HashSet<Long>();
-		//Get Parent Node
-		Relationship parent=startnode.getRelationships(Direction.OUTGOING,AuthorGraphRelationshipType.BELONGS_TO).iterator().next();
-		Node parentnode=parent.getEndNode();
-		Iterator<Relationship> neighbours=parentnode.getRelationships(Direction.INCOMING,AuthorGraphRelationshipType.BELONGS_TO).iterator();
-		
-		while(neighbours.hasNext()) {
-			neighbour_ids.add(neighbours.next().getStartNode().getId());
-		}
+		StandardDeviation stddev=new StandardDeviation();	
 		
 		HashMap<Long,Integer> module_degree_map=new HashMap<Long, Integer>();
 		HashMap<Long,Integer> total_count_map=new HashMap<Long, Integer>();
@@ -96,13 +94,15 @@ public class CalculateRoleValues extends Thread {
 				if(ids.contains(other.getId())) {
 					module_degree++;
 				}
-				long community_id=DBConnector.isInCommunity(other, neighbour_ids);
+				long community_id=DBConnector.isInCommunity(other, all_communities_ids);
 				if(community_id!=-1) {
 					if(communityEdges.get(community_id)==null) {
 						communityEdges.put(community_id, new Integer(1));
 					} else {
 						communityEdges.put(community_id, communityEdges.get(community_id)+1);
 					}
+				} else {
+					// Node is in another Year !!
 				}
 				total_count++;
 			}
