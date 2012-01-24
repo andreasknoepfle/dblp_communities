@@ -63,9 +63,6 @@ public class GenerateWeb {
 	private static final String TOP_Z_TITLE = "Within-module degree";
 	private static final String TOP_Z_HTML = "top_z";
 	
-	
-
-	
 
 	private static DBConnector dbconnector;
 
