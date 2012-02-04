@@ -1,5 +1,6 @@
 package dblp.communities.db_interface;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -8,7 +9,11 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ReturnableEvaluator;
+import org.neo4j.graphdb.StopEvaluator;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.Traverser;
+import org.neo4j.graphdb.Traverser.Order;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class DBConnector implements IDBConnector {
@@ -154,19 +159,33 @@ public class DBConnector implements IDBConnector {
 		return node.getId();
 	}
 	
-	/* (non-Javadoc)
-	 * @see dblp.communities.db_interface.IDBConnector#setProperty(org.neo4j.graphdb.Node, java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * @see dblp.communities.db_interface.IDBConnector#setAuthorProperty(java.lang.Long, java.lang.String, java.lang.String)
+	 * To be complatible
 	 */
-	public void setAuthorProperty( Long node,String id, String value){
+	@Override
+	public void setAuthorProperty(Long node, String id, String value) {
+		setAuthorProperty(node, id, value);
 		
+	}
+	
+	public void setAuthorProperty(Node node, String id, Object value) {
 		Transaction tx = graphDb.beginTx();
 		try {
-			graphDb.getNodeById(node).setProperty(id, value);
+			node.setProperty(id, value);
 			tx.success();
 			
 		} finally {
 			tx.finish();
 		}
+		
+	}
+	
+	public void setAuthorProperty( Long node,String id, Object value){
+		
+		setAuthorProperty(graphDb.getNodeById(node), id, value);
+		
 	}
 	
 	public static DBConnector getInstance(String dbPath) {
@@ -319,5 +338,31 @@ public class DBConnector implements IDBConnector {
 			return isInCommunity(parentnode, communities);
 		}
 	}
+	
+	public HashMap<Long,HashSet<Long>> getTopLevelNodes(){
+		HashMap<Long,HashSet<Long>> topLevelNodes = new HashMap<Long,HashSet<Long>>();
+		Node ref_Node = graphDb.getReferenceNode();
+		
+		Traverser traverse_years = ref_Node.traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, 
+				AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		
+		for (Node year_node : traverse_years) {
+			Iterable<Relationship> topLevel = year_node.getRelationships(Direction.INCOMING, AuthorGraphRelationshipType.BELONGS_TO);
+			
+			HashSet<Long> topLevelYear = new HashSet<Long>();
+			
+			for (Relationship relationship_topLevel : topLevel) {
+				
+				topLevelYear.add(relationship_topLevel.getStartNode().getId());
+				
+			}
+			
+			topLevelNodes.put(year_node.getId(), topLevelYear);
+			
+		}
+		return topLevelNodes;
+		
+	}
+
 
 }

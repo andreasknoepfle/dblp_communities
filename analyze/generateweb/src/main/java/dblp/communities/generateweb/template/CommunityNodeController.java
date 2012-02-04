@@ -1,4 +1,4 @@
-package dblp.communities.generateweb;
+package dblp.communities.generateweb.template;
 
 import java.util.ArrayList;
 import java.util.Iterator;

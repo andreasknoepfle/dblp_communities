@@ -1,4 +1,4 @@
-package dblp.communities.generateweb;
+package dblp.communities.generateweb.template;
 
 import org.neo4j.graphdb.Relationship;
 

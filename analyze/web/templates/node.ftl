@@ -11,7 +11,11 @@
   <table>
   <tr><th>Property</th><th>Value</th></tr>
   <#list node.properties?keys as key>
+    <#if key="top_z" || key="top_p">
+    <tr><td>${key}</td><td> <#assign num=1><#list node.properties[key] as item>${num}) ${item}<br><#assign num=num+1></#list></td></tr>
+    <#else>
     <tr><td>${key} </td><td> ${node.properties[key]}</td></tr>
+    </#if>
   </#list>
   </table>
   

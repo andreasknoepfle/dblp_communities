@@ -2,6 +2,7 @@ package dblp.communities.generateweb;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,11 +11,21 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ReturnableEvaluator;
+import org.neo4j.graphdb.StopEvaluator;
+import org.neo4j.graphdb.Traverser;
+import org.neo4j.graphdb.Traverser.Order;
 
+import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBConnector;
 import dblp.communities.db_interface.DoubleValueWrapper;
 import dblp.communities.db_interface.NamePair;
+import dblp.communities.generateweb.template.AuthorController;
+import dblp.communities.generateweb.template.CommunityNodeController;
+import dblp.communities.generateweb.template.NodeController;
+import dblp.communities.generateweb.template.TemplateEngine;
 
 public class GenerateWeb {
 
@@ -52,9 +63,6 @@ public class GenerateWeb {
 	private static final String TOP_Z_TITLE = "Within-module degree";
 	private static final String TOP_Z_HTML = "top_z";
 	
-	
-
-	
 
 	private static DBConnector dbconnector;
 
@@ -86,6 +94,23 @@ public class GenerateWeb {
 			int num = 0;
 			Map<String, Object> map = new HashMap<String, Object>();
 			
+			
+			Map<String,String> links=new HashMap<String,String>();
+			
+			//Toplists
+			//p
+			TemplateEngine toplistEngine = new TemplateEngine(out, template, TemplateEngine.DOUBLETOPLIST);
+			List<DoubleValueWrapper> max=Toplists.maxAuthorValue(dbconnector.getGraphDb().getReferenceNode(), PARTICIPATIONCOEFFICIENT, 10,dbconnector);
+			map.put(TOP_FIELD, max);
+			map.put(TITLE_FIELD, TOP_P_TITLE);
+			toplistEngine.generateTemplate(map, TOP_P_HTML);
+			links.put(TOP_P_HTML, TOP_P_TITLE);
+			//z
+			max=Toplists.maxAuthorValue(dbconnector.getGraphDb().getReferenceNode(), WITHINMODULEDEGREE, 10,dbconnector);
+			map.put(TOP_FIELD, max);
+			map.put(TITLE_FIELD, TOP_Z_TITLE);
+			toplistEngine.generateTemplate(map, TOP_Z_HTML);
+			links.put(TOP_Z_HTML, TOP_Z_TITLE);
 			// Generate Nodes.html && Index
 			
 			while (nodeiterator.hasNext()) {
@@ -150,26 +175,21 @@ public class GenerateWeb {
 				map.clear();
 			}
 			
-			Map<String,String> links=new HashMap<String,String>();
 			
-			//Toplists
-			//p
-			TemplateEngine toplistEngine = new TemplateEngine(out, template, TemplateEngine.DOUBLETOPLIST);
-			List<DoubleValueWrapper> list=Toplists.maxAuthorValue(dbconnector.getGraphDb().getReferenceNode(), PARTICIPATIONCOEFFICIENT, 10);
-			map.put(TOP_FIELD, list);
-			map.put(TITLE_FIELD, TOP_P_TITLE);
-			toplistEngine.generateTemplate(map, TOP_P_HTML);
-			links.put(TOP_P_HTML, TOP_P_TITLE);
-			//z
-			list=Toplists.maxAuthorValue(dbconnector.getGraphDb().getReferenceNode(), WITHINMODULEDEGREE, 10);
-			map.put(TOP_FIELD, list);
-			map.put(TITLE_FIELD, TOP_Z_TITLE);
-			toplistEngine.generateTemplate(map, TOP_Z_HTML);
-			links.put(TOP_Z_HTML, TOP_Z_TITLE);
 			
 			// Frameset
 			
 			TemplateEngine charsEngine = new TemplateEngine(out, template, TemplateEngine.FRAMESETTEMPLATE);
+			
+			Traverser traverser=dbconnector.getGraphDb().getReferenceNode().traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+			Collection<Node> years=traverser.getAllNodes();
+			// For Frontpage Linking
+			if(years.size()==1) {
+				map.put(NODE_FIELD,new NodeController(years.iterator().next()));
+			} else {
+				map.put(NODE_FIELD,new NodeController(dbconnector.getGraphDb().getReferenceNode()));
+			}
+			
 			map.put(CHARS_FIELD, index.keySet());
 			map.put(LINKS_FIELD, links);
 			charsEngine.generateTemplate(map, INDEX_HTML);

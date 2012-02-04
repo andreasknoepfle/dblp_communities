@@ -6,6 +6,10 @@ import java.util.Iterator;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ReturnableEvaluator;
+import org.neo4j.graphdb.StopEvaluator;
+import org.neo4j.graphdb.Traverser;
+import org.neo4j.graphdb.Traverser.Order;
 
 import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBConnector;
@@ -31,9 +35,14 @@ public class Launcher {
 				e.printStackTrace();
 			}
 			System.out.println("done");
+			System.out.println("Analyze Roles");
+			AnalyzeRoles analyze=new AnalyzeRoles();
+			Traverser traverser=dbconnector.getGraphDb().getReferenceNode().traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+			for (Node n:traverser) {
+				analyze.rolesDistribution(n, dbconnector);
+			}
 			
-			
-			
+			System.out.println("done");
 			
 
 		} else {
