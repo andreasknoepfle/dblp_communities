@@ -4,6 +4,16 @@
 
 \usepackage{graphicx}
 
+%neue Rechtschreibung
+\usepackage{ngerman}
+
+\usepackage{acronym}
+
+% deutsche Silbentrennung
+\usepackage[ngerman]{babel} 
+% wegen deutschen Umlauten
+\usepackage[ansinew]{inputenc}
+
 \author{
 	Tobias Schmid, Andreas Knöpfle \\ 
 	\\ 
@@ -19,33 +29,25 @@
 \maketitle
 
 \begin{abstract}
-Es folgt ein kurzer Überblick über die Arbeit. Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
+Es folgt ein kurzer Überblick über die Arbeit.
 \end{abstract}
 
-\section{Kapitelüberschrift}
+\include{chapter/einleitung}
+\include{chapter/ausgangssituation}
+\include{chapter/randbedingungen}
 
-Dies ist ein Kapitel. Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
+\include{chapter/communities}
+\include{chapter/authors}
+\include{chapter/visualization}
 
-Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
+\include{chapter/schluss}
 
-\section{Kapitelüberschrift}
+\include{chapter/abkuerzungen}
 
-Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
 
-\subsection{Unterkapitelüberschrift}
+\nocite{dblp_org}
+\nocite{dblp_xml}
 
-Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
-
-\begin{figure}[htb]
-  \begin{center}
-    \includegraphics[width=2cm]{gilogo}
-    \caption{\label{logo}Beschreibung der Abbildung}
-  \end{center}
-\end{figure}
-
-Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
-
-Text mit Fußnote.\footnote{Dies ist eine Fußnote. Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.} Text \cite{Ez99,ABC01} Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text.
 
 \bibliography{lnitemplate}
 

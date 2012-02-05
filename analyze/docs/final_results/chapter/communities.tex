@@ -1,14 +1,33 @@
 
+\section{Communities im Co-Autor-Graphen}
+
+
 Die Autoren sind durch gemeinsame Publikationen im Co-Autor-Graphen miteinander verbunden. Viele Publikationen zwischen zwei Autoren lassen auf eine starke Verbindung zwischen diesen schließen. Durch diese Verbindungen können sich Gemeinschaften unter den Autoren bilden.\\
 
 % {Teilfrage: Lassen sich Gemeinschaften/Communities in den dblp Daten finden?}
 Im Folgenden wird also untersucht, ob im Co-Autor-Graphen der DBLP Gemeinschaften unter den Autoren zu finden sind. \\
+Sollten Gemeinschaften gefunden werden können, ergeben sich die weiteren Fragestellungen:
+
+	\item Wie stark unterscheiden sich die Communities in ihrer Größe ?
+	\item Lassen sich die Communities charakterisieren ?
+	\item Ist ein Zusammenhang zwischen Größe und Charakter einer Community erkennbar ?
+
 
 % { Methoden }
+%Community-Algorithmus
 Um diese Gemeinschaften, weiterhin mit dem englischen Begriff Communities bezeichnet, finden zu können, wird der in \cite{communityDetection} beschriebene Community-Detection Algorithmus eingesetzt. Dieser Algorithmus findet Communities und deren Zusammensetzung als Hierarchiestruktur. Die Ergebnisse des Community-Detection Algorithmus werden in der Neo4J Datenbank gespeichert. \\
 
-% { Ergebnisse }
+Die oberste ebene der Hierarchiestruktur, die die Zusammensetzung der Communities beschreibt, besteht aus den gefundenen Communities (Top-Level-Communities). Jede dieser Communities besteht wieder aus kleineren Communities und diese wieder aus Communities usw.. So gibt es mehrere Stufen, wobei die unterste Ebene die Autoren darstellt. \\
 
+%Größe der Community
+Die Größe jeder Top-Level-Community und ihrer Untergruppen kann durch einen rekursiven Algorithmus berechnet werden. \\
+
+%Conductance einer Community
+Die Conductance einer Community zeigt das Verhältnis der Anzahl der Kanten, welche diese Community mit einer anderen verbindet, zu der Anzahl der Kanten innerhalb der Community an. \\
+
+Mit diesen beiden Werten können die Communities charakterisiert werden.
+
+% { Ergebnisse }
 
 
 
