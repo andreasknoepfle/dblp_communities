@@ -8,10 +8,11 @@ Die Autoren sind durch gemeinsame Publikationen im Co-Autor-Graphen miteinander 
 Im Folgenden wird also untersucht, ob im Co-Autor-Graphen der DBLP Gemeinschaften unter den Autoren zu finden sind. \\
 Sollten Gemeinschaften gefunden werden können, ergeben sich die weiteren Fragestellungen:
 
+\begin{itemize}
 	\item Wie stark unterscheiden sich die Communities in ihrer Größe ?
-	\item Lassen sich die Communities charakterisieren ?
+	\item Wie lassen sich die Communities noch anders charakterisieren (nicht nach der Größe) ?
 	\item Ist ein Zusammenhang zwischen Größe und Charakter einer Community erkennbar ?
-
+\end{itemize}
 
 % { Methoden }
 %Community-Algorithmus
@@ -23,13 +24,77 @@ Die oberste ebene der Hierarchiestruktur, die die Zusammensetzung der Communitie
 Die Größe jeder Top-Level-Community und ihrer Untergruppen kann durch einen rekursiven Algorithmus berechnet werden. \\
 
 %Conductance einer Community
-Die Conductance einer Community zeigt das Verhältnis der Anzahl der Kanten, welche diese Community mit einer anderen verbindet, zu der Anzahl der Kanten innerhalb der Community an. \\
+Die Conductance einer Community zeigt das Verhältnis der Anzahl der Kanten, welche diese Community mit einer anderen verbindet, zu der Anzahl der Kanten innerhalb der Community an. Dies kann als zusätzliche Charakterisierung verwendet werden. \\
 
-Mit diesen beiden Werten können die Communities charakterisiert werden.
+
+% Mit Mit Größe und Conductance können die Communities charakterisiert werden.
 
 % { Ergebnisse }
 
+\subsection{Der Community Algorithmus}
 
+TODO ...
 
+\subsection{Die Messungen}
+
+Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die Messung der Community Größen und danach auf die Messung der Conductance eingegangen.
+
+	\subsection{Größe}
+	
+	Da die Communities Hierarchisch aufgebaut sind, können die Größen der Communities auf den verschiedenen Hierarchie-Ebenen gemessen werden. Dazu sollte die Größe der unterste Ebene (eine ebene über der Autor Ebene) gleich der Anzahl der Autoren sein, welche direkt mit dieser Community verbunden sind. Die Größe jeder Community in einer höheren Ebene setzt sich dann durch die Anzahl der beinhaltenden Autoren der Unterebenen zusammen. So kann für alle Communities auf allen Ebenen die genaue Größe bestimmt werden. \\
+	
+	Um diese Größen für den Co-Author-Graphen zu bestimmen, wird ein rekursiever Algorithmus entwickelt, welcher auf den einzelnen Ebenen für die Communities die Größen berechnet. In folgendem Code-Listing ist der rekursive Algorithmus abgebildet.
+	
+	\begin{verbatim}
+
+		HashMap<Long, Object> counts;
+	
+		long count(Node community) {
+			
+			Iterable<Relationship> rel = community.getRelationships(AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+			Iterator<Relationship> iterator=rel.iterator();
+			if (iterator.hasNext()) {
+			
+			long counter_community = 0;
+			
+			while (iterator.hasNext()) {
+			
+			Relationship element = iterator.next();
+			
+			long count = count(connector, element.getStartNode());
+			
+			counter_community += count;
+			
+			}
+			
+			counts.put(community.getId(), counter_community);
+			
+			return counter_community;
+			
+			}
+			// the author node
+			else {
+			return 1;
+			}
+			
+		}
+	\end{verbatim}
+	
+	Der Algorithmus startet bei dem ersten Community Knoten welcher der Methode übergeben wird. Es werden alle "BELONGS_TO" Beziehungen verwendet, um alle Unter-Communities des Community Knotens zu finden. dann wird der Algorithmus rekursiv auf alle Unter-Communities angewandt. Wenn der Algorithmus bei einem Autor Knoten angekommen ist, wird für diesen Autor Knoten der Wert eins zurückgegeben und schlussendlich die entsprechenden Anzahlen der Communities in der Rekursion nach oben durchgegeben. Die Anzahl an Autoren in einer Community wird  jeweils gespeichert, um diese Werte in die Datenbank schreiben zu können.
+
+	\subsection{Conductance}
+
+	\subsection{Ergebnisse in die Datenbank schreiben}
+
+	Da sehr viele Knoten und Kanten in der Datenbank gespeichert sind und alle Messergebnisse zu den jeweiligen Knoten und Kanten in die Datenbank geschrieben werden sollen, wird eine effektive Möglichkeit benötigt die große Menge an Messergebnissen in die Datenbank zu schreiben.
+	
+
+\subsection{Ergebnisse der Messungen}
+
+	\subsection{Größe}
+
+	\subsection{Conductance}
+
+\subsection{ Analyse der Ergebnisse }
 
 % { Diskussion }
