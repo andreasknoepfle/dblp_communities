@@ -6,17 +6,19 @@ Die Autoren sind durch gemeinsame Publikationen im Co-Autor-Graphen miteinander 
 
 % {Teilfrage: Lassen sich Gemeinschaften/Communities in den dblp Daten finden?}
 Im Folgenden wird also untersucht, ob im Co-Autor-Graphen der DBLP Gemeinschaften unter den Autoren zu finden sind. \\
-Sollten Gemeinschaften gefunden werden können, ergeben sich die weiteren Fragestellungen: \\\\
+Sollten Gemeinschaften gefunden werden können, ergeben sich die weiteren Fragestellungen: 
 
-Wie stark unterscheiden sich die Communities in ihrer Größe ? \\
-Wie lassen sich die Communities noch anders charakterisieren (nicht nach der Größe) ? \\
-Ist ein Zusammenhang zwischen Größe und Charakter einer Community erkennbar ? \\\\
+\begin{center}
+\textit{Wie stark unterscheiden sich die Communities in ihrer Größe ?} \\
+\textit{Wie lassen sich die Communities noch anders charakterisieren (nicht nach der Größe) ?} \\
+\textit{Ist ein Zusammenhang zwischen Größe und Charakter einer Community erkennbar ?} 
+\end{center}
 
 % { Methoden }
 %Community-Algorithmus
 Um diese Gemeinschaften, weiterhin mit dem englischen Begriff Communities bezeichnet, finden zu können, wird der in \cite{communityalgo} beschriebene Community-Detection Algorithmus eingesetzt. Dieser Algorithmus findet Communities und deren Zusammensetzung als Hierarchiestruktur. Die Ergebnisse des Community-Detection Algorithmus werden in der Neo4J Datenbank gespeichert. \\
 
-Die oberste ebene der Hierarchiestruktur, die die Zusammensetzung der Communities beschreibt, besteht aus den gefundenen Communities (Top-Level-Communities). Jede dieser Communities besteht wieder aus kleineren Communities und diese wieder aus Communities usw.. So gibt es mehrere Stufen, wobei die unterste Ebene die Autoren darstellt. \\
+Die oberste Ebene der Hierarchiestruktur, die die Zusammensetzung der Communities beschreibt, besteht aus den gefundenen Communities (Top-Level-Communities). Jede dieser Communities besteht wieder aus kleineren Communities und diese wieder aus Communities (...).  So gibt es mehrere Stufen, wobei die unterste Ebene die Autoren darstellt. \\
 
 %Größe der Community
 Die Größe jeder Top-Level-Community und ihrer Untergruppen kann durch einen rekursiven Algorithmus berechnet werden. \\
@@ -31,7 +33,7 @@ Die Conductance einer Community zeigt das Verhältnis der Anzahl der Kanten, welc
 
 \subsection{Der Community Algorithmus}
 
-Zum Finden der Communities wurde die C++ Implementierung\footnote{\burl{https://sites.google.com/site/findcommunities/}} des in \cite{communityalgo} beschriebenen Algorithmus eingesetzt. Der Algorithmus erwartet dabei die Kantenliste eines Graphen, berechnet damit die im Graphem auftretenden Communities und ihre Zusammensetzung und liefert das Ergebnis als hierarchische Struktur. Dabei ist die oberste Hirarchieebene die Aufteilung in die Communities und die unterste Hierarchieebene die Authoren selbst. Jede dazwischenliegende Ebenen beschreibt die Zusammensetzung der Communities, die eine Ebene weiter oben liegen, aus kleineren Communities. Der Co-Author-Graph des DBLP-Datensatzes liefert dabei folgende Ausgabe: \\ 
+Zum Finden der Communities wurde die C++ Implementierung\footnote{\burl{https://sites.google.com/site/findcommunities/}} des in \cite{communityalgo} beschriebenen Algorithmus eingesetzt. Der Algorithmus erwartet dabei die Kantenliste eines Graphen, berechnet damit die im Graphem auftretenden Communities und ihre Zusammensetzung und liefert das Ergebnis als hierarchische Struktur. Dabei ist, wie bereits erwähnt, die oberste Hirarchieebene die Aufteilung in die Top-Level-Communities und die unterste Hierarchieebene die Authoren selbst. Jede dazwischenliegende Ebenen beschreibt die Zusammensetzung der Communities, die eine Ebene weiter oben liegen, aus kleineren Communities. Der Co-Author-Graph des DBLP-Datensatzes liefert dabei folgende Ausgabe: \\ 
 
 \begin{verbatim}
 Number of levels: 6
@@ -45,13 +47,13 @@ level 0: 986043 nodes
 
 
 
-\subsection{Die Messungen}
+\subsection{Metriken einer Community}
 
 Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die Messung der Community Größen und danach auf die Messung der Conductance eingegangen.
 
 	\subsection{Größe}
 	
-	Da die Communities Hierarchisch aufgebaut sind, können die Größen der Communities auf den verschiedenen Hierarchie-Ebenen gemessen werden. Dazu sollte die Größe der unterste Ebene (eine ebene über der Autor Ebene) gleich der Anzahl der Autoren sein, welche direkt mit dieser Community verbunden sind. Die Größe jeder Community in einer höheren Ebene setzt sich dann durch die Anzahl der beinhaltenden Autoren der Unterebenen zusammen. So kann für alle Communities auf allen Ebenen die genaue Größe bestimmt werden. \\
+	Da die Communities Hierarchisch aufgebaut sind, können die Größen der Communities auf den verschiedenen Hierarchie-Ebenen gemessen werden.  Die Größe jeder Community in einer höheren Ebene setzt sich durch die Anzahl der beinhaltenden Autoren der Unterebenen zusammen. So kann für alle Communities auf allen Ebenen die genaue Größe bestimmt werden. \\
 	
 	Um diese Größen für den Co-Author-Graphen zu bestimmen, wird ein rekursiever Algorithmus entwickelt, welcher auf den einzelnen Ebenen für die Communities die Größen berechnet. In folgendem Pseudocode-Listing ist der rekursive Algorithmus abgebildet.
 	
@@ -69,7 +71,7 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 	
 	\end{verbatim}
 	
-	Der Algorithmus startet bei dem ersten Community Knoten welcher der Methode übergeben wird. Es werden alle \textit{BELONGS\_TO} Beziehungen verwendet, um alle Unter-Communities des Community Knotens zu finden. dann wird der Algorithmus rekursiv auf alle Unter-Communities angewandt. Wenn der Algorithmus bei einem Autor Knoten angekommen ist, wird für diesen Autor Knoten der Wert eins zurückgegeben und schlussendlich die entsprechenden Anzahlen der Communities in der Rekursion nach oben durchgegeben. Um die Anzahl der Authoren einer Community auch zu speichern, kann in dem oben beschriebenen Algorithmus, in einem zusätzlichen Schritt, die Größe jeweils in die Datenbank geschrieben werden.
+	Der Algorithmus startet bei dem ersten Community Knoten welcher der Methode übergeben wird. Es werden alle \textit{BELONGS\_TO} Beziehungen verwendet, um alle Unter-Communities des Community Knotens zu finden. dann wird der Algorithmus rekursiv auf alle Unter-Communities angewandt. Wenn der Algorithmus bei einem Autor Knoten angekommen ist, wird für diesen Autor Knoten der Wert "1" zurückgegeben und schlussendlich die entsprechenden Anzahlen der Communities in der Rekursion nach oben durchgegeben. Um die Anzahl der Authoren einer Community auch zu speichern, kann in dem oben beschriebenen Algorithmus, in einem zusätzlichen Schritt, die Größe jeweils in die Datenbank geschrieben werden.
 
 
 	\subsection{Conductance}
@@ -96,14 +98,7 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 		
 	Somit ist die Conductance ein Verhältnis der Publikations-Kanten ,welche aus der Community heraus gehen zu der Anzahl an Publikations-Kanten innerhalb der Community. \\
 	
-	Der erwartete Wertebereich der Conductance liegt zwischen Null und Eins. Dabei würde Null bedeuten, dass keine Kanten nach außen gehen und die Community komplett isoliert ist. Ein Wert größer Eins würde bedeuten, dass die Community mehr Kanten nach außen hat, als innere Kanten. Da der Community Algorithmus zur Erkennung von Communities die Anzahl der Kanten zwischen den Knoten betrachtet, ist es eher unwahrscheinlich, dass eine Community mit einer Conductance größer Eins entsteht.
-
-
-
-	\subsection{Ergebnisse in die Datenbank schreiben}
-
-	Da sehr viele Knoten und Kanten in der Datenbank gespeichert sind und alle Messergebnisse zu den jeweiligen Knoten und Kanten in die Datenbank geschrieben werden sollen, wird eine effektive Möglichkeit benötigt die große Menge an Messergebnissen in die Datenbank zu schreiben.
-	
+	Der erwartete Wertebereich der Conductance liegt zwischen 0,0 und 1,0. Dabei würde 0,0 bedeuten, dass keine Kanten nach außen gehen und die Community komplett isoliert ist. Ein Wert >1,0 würde bedeuten, dass die Community mehr Kanten nach außen hat, als innere Kanten. Da der Community Algorithmus zur Erkennung von Communities die Anzahl der Kanten zwischen den Knoten betrachtet, ist es eher unwahrscheinlich, dass eine Community mit einer Conductance >1,0 entsteht.
 
 \subsection{Ergebnisse der Messungen}
 
@@ -124,19 +119,19 @@ Die größte Community beinhaltet 83723 Autoren. Es haben 43854 Communities wenige
 
 	\subsubsection{Conductance}
 
-	Abbildung \ref{img:conductance_dist} zeigt die Verteilung der Conductance Werte über die Communities. Auf der vertikalen Achse ist die Anzahl der Communities angegeben. Es haben 43529 Communities eine Conductance von 0 und werden deshalb auf der Skala nicht abgebildet, da sonst die anderen Wertebereiche nicht mehr erkennbar wären. Die Conductance-Werte sind in jeweils 0,1 langen Intervall-Schritten zusammengefasst. Zusätzlich wird alles über einen Wert von 0,5 zusammengefasst.
+	Abbildung \ref{img:conductance_dist} zeigt die Verteilung der Conductance Werte über die Communities. Auf der vertikalen Achse ist die Anzahl der Communities angegeben. Es haben 43529 Communities eine Conductance von 0,0 und werden deshalb auf der Skala nicht abgebildet, da sonst die anderen Wertebereiche nicht mehr erkennbar wären. Die Conductance-Werte sind in jeweils 0,1 langen Intervall-Schritten zusammengefasst. Zusätzlich wird alles über einen Wert von >=0,5 zusammengefasst.
 	
 	\begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{results/conductance_dist}
 					} \newcaption{Conductance-Verteilung der Communities}
 					\label{img:conductance_dist} 
 					
-					( 43529 Communities haben eine Conductance von 0 )
+					( 43529 Communities haben eine Conductance von 0,0 )
 					
 	\end{center}
 	
 	
-	Die nächste Abbildung \ref{img:conductance_vs_authors} zeigt nun das Verhältnis der Größe einer Community zu dessen Conductance Wert. Der größte Teil (43529) aller Communities ist bei dem Wert 0 abgebildet. Es ist zu erkennen, dass es keine größere Community mit einer Conductance von 0 gibt.
+	Die nächste Abbildung \ref{img:conductance_vs_authors} zeigt nun das Verhältnis der Größe einer Community zu dessen Conductance Wert. Der größte Teil (43529) aller Communities ist bei dem Wert 0,0 abgebildet. Es ist zu erkennen, dass es keine größere Community (>5000 Autoren) mit einer Conductance von 0,0 gibt.
 
 	\begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{results/conductance_vs_num_authors}
@@ -144,16 +139,16 @@ Die größte Community beinhaltet 83723 Autoren. Es haben 43854 Communities wenige
 					\label{img:conductance_vs_authors}
 	\end{center}
 
-	Eine einzige Community besitzt einen Conductance Wert größer 1 (mehr Kanten nach Außen als innerhalb der Community).
+	Eine einzige Community besitzt einen Conductance Wert >1,0 (mehr Kanten nach Außen als innerhalb der Community).
 
-\subsection{ Analyse der Ergebnisse }
+\subsection{ Analyse der Messergebnisse }
 
-Eine Große Anzahl an Communities sind sehr klein und viele von diesen kleinen Communities haben auch eine sehr kleine Conductance oder sogar den Wert 0.
-Eine Conductance von 0 bedeutet, dass diese Communities keine Kanten nach Außen besitzen und komplett isoliert sind. 
+Eine Große Anzahl an Communities sind sehr klein und viele von diesen kleinen Communities haben auch eine sehr kleine Conductance oder sogar den Wert 0,0.
+Eine Conductance von 0,0 für eine Community bedeutet, dass diese  keine Kanten nach Außen besitzen und komplett isoliert ist. 
 
-Mithilfe der Abbildung \ref{img:conductance_vs_authors} ist zu erkennen, dass keine größeren Communities eine conductance von 0 aufweisen. Dies bedeutet, dass keine größere Communty existiert, welche komplett von den anderen Communities isoliert ist.
+Mithilfe der Abbildung \ref{img:conductance_vs_authors} ist zu erkennen, dass keine größeren Communities (>5000 Autoren) eine conductance von 0,0 aufweisen. Dies bedeutet, dass keine größere Communty existiert, welche komplett von den anderen Communities isoliert ist.
 
-Eine einzelne Community besitzt einen Conductance Wert größer Eins.\\
+Eine einzelne Community besitzt einen Conductance Wert >1,0.\\
  Wie konnte diese Community vom Community-detection-Algorithmus als Community erkannt werden, wenn mehr Kanten aus der Community heraus gehen, als in der Community vorhanden sind?\\
 Dies könnte sich dadurch erklären, dass der Community Algorithmus auch das Gewicht der Kanten (Anzahl an Publikationen) verwendet, um Communities zu erkennen. Dadurch könnte eine Community erkannt werden, welche stark gewichtete Kanten innerhalb der Community besitzt, aber die Anzahl der Kanten nach außen größer ist. \\\\
 

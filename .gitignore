@@ -12,4 +12,6 @@ dblp-out
 *.log
 *.bbl
 *.blg
+*.out
+*.toc
 *.pdf
