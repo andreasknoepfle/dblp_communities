@@ -1,0 +1,54 @@
+\documentclass{lni}
+
+\IfFileExists{latin1.sty}{\usepackage{latin1}}{\usepackage{isolatin1}}
+
+\usepackage{graphicx}
+
+%neue Rechtschreibung
+\usepackage{ngerman}
+
+\usepackage{acronym}
+
+% deutsche Silbentrennung
+\usepackage[ngerman]{babel} 
+% wegen deutschen Umlauten
+\usepackage[ansinew]{inputenc}
+
+\author{
+	Tobias Schmid, Andreas Knöpfle \\ 
+	\\ 
+	Fachbereich Informatik \\ 
+	Freie Universität Berlin \\ 
+	Anschrift \\ 
+	Postleitzahl Ort \\ 
+	emaiaddresse@autor1 \\
+	emaiaddresse@autor2
+}
+\title{Communities im Co-Author-Graphen}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Es folgt ein kurzer Überblick über die Arbeit.
+\end{abstract}
+
+\include{chapter/einleitung}
+\include{chapter/ausgangssituation}
+\include{chapter/randbedingungen}
+
+\include{chapter/communities}
+\include{chapter/authors}
+\include{chapter/visualization}
+
+\include{chapter/schluss}
+
+\include{chapter/abkuerzungen}
+
+
+\nocite{dblp_org}
+\nocite{dblp_xml}
+\nocite{conductance_formel}
+
+\bibliography{lnitemplate}
+
+\end{document}
