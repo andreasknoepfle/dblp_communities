@@ -76,7 +76,11 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 	
 	Die Conductance einer Community ist durch folgende Formel \cite[p.18]{conductance} bestimmt: \\\\
 	
+		% \begin{equation} 
+		
 		$ \frac{c(C,G \backslash C)}{min(k_{C},k_{G \backslash  C})} $ \\\\
+
+		% \end{equation}		
 		
 	Dabei haben die Werte die folgende Bedeutung:
 	
@@ -103,9 +107,41 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 
 \subsection{Ergebnisse der Messungen}
 
+
+
 	\subsection{Größe}
+	
+In Abbildung \ref{img:community_size} ist die Größenverteilung der Communities dargestellt. Dazu wurde ein Kreisdiagramm gewählt in welchem alle Communities, welche weniger als 5000 Autoren besitzen, zusammen gefasst werden. 
+	
+	\begin{figure}[htb]
+		\begin{center}
+			\includegraphics[scale=0.4]{results/size_dist}
+			\caption{Größenverteilung der Communities}
+			\label{img:community_size}
+		\end{center}
+	\end{figure} 
+
+Die größte Community beinhaltet 83723 Autoren.
+	
 
 	\subsection{Conductance}
+	
+		\begin{figure}[htb]
+		\begin{center}
+			\includegraphics[scale=0.4]{results/conductance_dist}
+			\caption{Conductance-Verteilung der Communities}
+			\label{img:conductance_dist}
+		\end{center}
+	\end{figure} 
+
+		\begin{figure}[htb]
+		\begin{center}
+			\includegraphics[scale=0.4]{results/conductance_vs_num_authors}
+			\caption{Conductance abhängig von der Größe der Communities}
+			\label{img:conductance_vs_authors}
+		\end{center}
+	\end{figure} 
+
 
 \subsection{ Analyse der Ergebnisse }
 
