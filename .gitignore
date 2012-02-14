@@ -8,3 +8,8 @@ Community_BGLL_CPP
 */.project
 */.settings/*
 dblp-out
+*.aux
+*.log
+*.bbl
+*.blg
+*.pdf

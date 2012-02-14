@@ -8,7 +8,7 @@
 \usepackage{ngerman}
 
 \usepackage{acronym}
-
+\usepackage{picins} % Grafiken mit hpic einfuegen
 % deutsche Silbentrennung
 \usepackage[ngerman]{babel} 
 % wegen deutschen Umlauten
@@ -18,7 +18,7 @@
 	Tobias Schmid, Andreas Knöpfle \\ 
 	\\ 
 	Fachbereich Informatik \\ 
-	Freie Universität Berlin \\ 
+	Freie Universitt Berlin \\ 
 	Anschrift \\ 
 	Postleitzahl Ort \\ 
 	emaiaddresse@autor1 \\
@@ -29,7 +29,7 @@
 \maketitle
 
 \begin{abstract}
-Es folgt ein kurzer Überblick über die Arbeit.
+Es folgt ein kurzer berblick ber die Arbeit.
 \end{abstract}
 
 \include{chapter/einleitung}
@@ -49,6 +49,7 @@ Es folgt ein kurzer Überblick über die Arbeit.
 \nocite{dblp_xml}
 \nocite{conductance_formel}
 
-\bibliography{lnitemplate}
+\bibliographystyle{alphadin}
+\bibliography{dblp_communities}
 
 \end{document}
