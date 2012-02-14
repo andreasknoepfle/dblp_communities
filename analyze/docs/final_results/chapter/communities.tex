@@ -76,25 +76,32 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 
 	\subsection{Conductance}
 	
-	Die Conductance einer Community ist durch folgende Formel \cite[p.18]{conductance} bestimmt: \\\\
-	
+	Die Conductance einer Community ist durch folgende Formel \cite[p.18]{conductance} bestimmt: \\
+
+
+\begin{center}
+\hpic{\includegraphics[width=0.7\textwidth]{images/conductance}
+					} \newcaption{Formel zur Berechnung der Conductance}
+					\label{form:Conductance-form  }	
+					Quelle:(\cite{p.18})
+\end{center}	
 		% \begin{equation} 
 		
-		$ \frac{c(C,G \backslash C)}{min(k_{C},k_{G \backslash  C})} $ \\\\
+		%$ \frac{c(C,G \backslash C)}{min(k_{C},k_{G \backslash  C})} $ \\\\
 
 		% \end{equation}		
 		
-	Dabei haben die Werte die folgende Bedeutung:
+	%Dabei haben die Werte die folgende Bedeutung:
 	
-	\begin{itemize}
+	%\begin{itemize}
 	
-	\item C: Community
-	\item G: Gesamtgraph
-	\item c(C, G \textbackslash C): Cut size von C
-	\item $ k_{C} $: Anzahl Kanten von C
-	\item $ k_{G \backslash C} $: Anzahl Kanten von G ohne C
+	%\item C: Community
+	%\item G: Gesamtgraph
+	%\item c(C, G \textbackslash C): Cut size von C
+	%\item $ k_{C} $: Anzahl Kanten von C
+	%\item $ k_{G \backslash C} $: Anzahl Kanten von G ohne C
 
-	\end{itemize}
+	%\end{itemize}
 		
 	Somit ist die Conductance ein Verhältnis der Publikations-Kanten ,welche aus der Community heraus gehen zu der Anzahl an Publikations-Kanten innerhalb der Community. \\
 	
