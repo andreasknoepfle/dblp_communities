@@ -1,11 +1,15 @@
 \documentclass{lni}
-
+\let\ifpdf\relax
 \IfFileExists{latin1.sty}{\usepackage{latin1}}{\usepackage{isolatin1}}
 
 \usepackage{graphicx}
 
 %neue Rechtschreibung
 \usepackage{ngerman}
+
+\usepackage[colorlinks=false,pdfborder=0 0 0]{hyperref} %URLS
+\usepackage[hyphenbreaks]{breakurl}
+\usepackage{listings} % XML Listing
 
 \usepackage{acronym}
 \usepackage{picins} % Grafiken mit hpic einfuegen
