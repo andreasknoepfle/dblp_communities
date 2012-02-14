@@ -1,9 +1,40 @@
 \section{Ausgangssituation}
 
-Als Datenquelle für den Co-Autor-Graphen werden die Metadaten der \acs{DBLP}-Datenbank im \acs{XML}-Format benutzt \cite{dblp_xml}.
+Als Datenquelle für den Co-Autor-Graphen werden die Metadaten der \acs{DBLP}-Datenbank im \acs{XML}-Format benutzt
+\footnote{\burl{http://dblp.uni-trier.de/xml/}}.
 Die Metadaten bestehen aus einer Liste der wissenschaftlichen Artikel mit Titel, Datum, Autoren und zusätzlichen Informationen über die Veröffentlichung. \\
 
-In \ref{listing:xml_source} ist ein Ausschnitt aus dieser \acs{XML} Quelle abgebildet. Aus dieser Quelle kann der Co-Autor-Graph erzeugt werden, da jeder Artikel alle beteiligten Autoren enthält und somit auf Knoten und Kanten im Graphen abgebildet werden kann.
+In Listing \ref{lst:dblp_xml_source} ist ein Ausschnitt aus dieser \acs{XML} Quelle abgebildet. Aus dieser Quelle kann der Co-Autor-Graph erzeugt werden, da jeder Artikel alle beteiligten Autoren enthält und somit auf Knoten und Kanten im Graphen abgebildet werden kann.
 
-
+\begin{lstlisting}[language=XML, basicstyle=\footnotesize,tagstyle={\bfseries\slshape},caption=Auszug aus der DBLP XML-Datei,label={lst:dblp_xml_source}]
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+ <article mdate="2002-01-03" key="persons/Codd71a">
+  <author>E. F. Codd</author>
+  <title>Further Normalization of the Data Base Relational Model.</title>
+  <journal>IBM Research Report, San Jose, California</journal>
+  <volume>RJ909</volume>
+  <month>August</month>
+  <year>1971</year>
+  <cdrom>ibmTR/rj909.pdf</cdrom>
+  <ee>db/labs/ibm/RJ909.html</ee>
+ </article>
+ <article mdate="2002-01-03" key="persons/Hall74">
+  <author>Patrick A. V. Hall</author>
+  <title>Common Subexpression Identification in General Algebraic Systems.</title>
+  <journal>Technical Rep. UKSC 0060, IBM United Kingdom Scientific Centre</journal>
+  <month>November</month>
+  <year>1974</year>
+ </article>
+ <article mdate="2002-01-03" key="persons/Tresch96">
+  <author>Markus Tresch</author>
+  <title>Principles of Distributed Object Database Languages.</title>
+  <journal>technical Report 248, ETH Z&uuml;rich, Dept. of Computer Science</journal>
+  <month>July</month>
+  <year>1996</year>
+ </article>
+(...)
+</dblp>
+\end{lstlisting}
 %\subsubsection{Die DBLP Daten}

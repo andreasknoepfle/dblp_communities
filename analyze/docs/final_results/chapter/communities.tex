@@ -31,7 +31,7 @@ Die Conductance einer Community zeigt das Verhältnis der Anzahl der Kanten, welc
 
 \subsection{Der Community Algorithmus}
 
-Zum Finden der Communities wurde die C++ Implementierung\footnote{https://sites.google.com/site/findcommunities/} des in \cite{communityalgo} beschriebenen Algorithmus eingesetzt. Der Algorithmus erwartet dabei die Kantenliste eines Graphen, berechnet damit die im Graphem auftretenden Communities und ihre Zusammensetzung und liefert das Ergebnis als hierarchische Struktur. Dabei ist die oberste Hirarchieebene die Aufteilung in die Communities und die unterste Hierarchieebene die Authoren selbst. Jede dazwischenliegende Ebenen beschreibt die Zusammensetzung der Communities, die eine Ebene weiter oben liegen, aus kleineren Communities. Der Co-Author-Graph des DBLP-Datensatzes liefert dabei folgende Ausgabe: \\ 
+Zum Finden der Communities wurde die C++ Implementierung\footnote{\burl{https://sites.google.com/site/findcommunities/}} des in \cite{communityalgo} beschriebenen Algorithmus eingesetzt. Der Algorithmus erwartet dabei die Kantenliste eines Graphen, berechnet damit die im Graphem auftretenden Communities und ihre Zusammensetzung und liefert das Ergebnis als hierarchische Struktur. Dabei ist die oberste Hirarchieebene die Aufteilung in die Communities und die unterste Hierarchieebene die Authoren selbst. Jede dazwischenliegende Ebenen beschreibt die Zusammensetzung der Communities, die eine Ebene weiter oben liegen, aus kleineren Communities. Der Co-Author-Graph des DBLP-Datensatzes liefert dabei folgende Ausgabe: \\ 
 
 \begin{verbatim}
 Number of levels: 6
