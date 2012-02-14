@@ -5,6 +5,13 @@ cssdir="analyze/web/css"
 htmlout="$out/$1/web/"
 generateweb="analyze/generateweb/target/generateweb-with-deps.jar"
 staticdir="analyze/web/static"
+if [ $# -eq 2 ];
+then 
+yearOnly=$2
+else
+yearOnly="false"
+
+fi
 if [ ! -d $htmlout ];
 then 
 mkdir $htmlout 
@@ -13,5 +20,5 @@ if [ -d $neo4j ];
 then
 cp -r $cssdir $htmlout
 cp -r $staticdir $htmlout
-java -XX:+UseConcMarkSweepGC -mx2048M -jar $generateweb $neo4j $templatedir $htmlout
+java -XX:+UseConcMarkSweepGC -mx2048M -jar $generateweb $neo4j $templatedir $htmlout $yearOnly
 fi

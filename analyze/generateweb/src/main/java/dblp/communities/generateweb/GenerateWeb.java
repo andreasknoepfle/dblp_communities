@@ -35,6 +35,7 @@ public class GenerateWeb {
 	
 	
 	
+	
 	private static final String NODE_FIELD = "node";
 	private static final String AUTHOR_FIELD = "author";
 	private static final String YEAR_FIELD = "year";
@@ -63,15 +64,20 @@ public class GenerateWeb {
 	private static final String TOP_Z_TITLE = "Within-module degree";
 	private static final String TOP_Z_HTML = "top_z";
 	
+	private static final String CONDUCTANCE = "conductance";
+	private static final String TOP_C_TITLE = "Conductance";
+	private static final String TOP_C_HTML = "top_c";
+	private static final String CONDUCTANCE_DISTRIBUTION_FIELD = "conductance";
 
 	private static DBConnector dbconnector;
 
 	public static void main(String[] args) throws IOException {
 
 		Map<Character, SortedSet<NamePair>> index;
-		if (args.length == 3) {
+		if (args.length == 4) {
 			String outfile = args[2];
 			String templatedir = args[1];
+			boolean yearOnly=Boolean.valueOf(args[3]);
 			File template = new File(templatedir);
 			File out = new File(outfile);
 			File nodeout = new File(out, "nodes");
@@ -96,7 +102,7 @@ public class GenerateWeb {
 			
 			
 			Map<String,String> links=new HashMap<String,String>();
-			
+			if(!yearOnly) {
 			//Toplists
 			//p
 			TemplateEngine toplistEngine = new TemplateEngine(out, template, TemplateEngine.DOUBLETOPLIST);
@@ -111,16 +117,29 @@ public class GenerateWeb {
 			map.put(TITLE_FIELD, TOP_Z_TITLE);
 			toplistEngine.generateTemplate(map, TOP_Z_HTML);
 			links.put(TOP_Z_HTML, TOP_Z_TITLE);
+			//conductance
+			max=Toplists.maxTopLevelCommunityValue(dbconnector.getGraphDb().getReferenceNode(), CONDUCTANCE, 10);
+			map.put(TOP_FIELD, max);
+			map.put(TITLE_FIELD, TOP_C_TITLE);
+			toplistEngine.generateTemplate(map, TOP_C_HTML);
+			links.put(TOP_C_HTML, TOP_C_TITLE);
+			} else {
+				Traverser traverse_years=dbconnector.getGraphDb().getReferenceNode().traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+				nodeiterator=traverse_years.iterator();
+			}
 			// Generate Nodes.html && Index
 			
 			while (nodeiterator.hasNext()) {
 				if (num % 1000 == 0) {
 					System.out.println(num);
-					if(num==1000)
-						break;
 				}
 
 				Node n = nodeiterator.next();
+				if(yearOnly) {
+					if(!n.hasProperty("fromYear")) {
+						continue;
+					}
+				}
 				// Node Information
 				
 				if (n.hasProperty(NodeController.NAME)) {
@@ -141,16 +160,17 @@ public class GenerateWeb {
 					if(n.hasProperty("fromYear")) {
 						//Year node
 						map.put(YEAR_FIELD,new NodeController(n));
-						map.put(COMMUNITY_FIELD,new CommunityNodeController(n));
+						map.put(COMMUNITY_FIELD,new CommunityNodeController(n,true));
+						map.put(CONDUCTANCE_DISTRIBUTION_FIELD, getConductanceDistribution(n));
 						yearengine.generateTemplate(map, String.valueOf(n.getId()));
 					} else if(n.getId()==0) {
 						//Root node
 						map.put(ROOTNODE_FIELD, new NodeController(n));
-						map.put(COMMUNITY_FIELD,new CommunityNodeController(n));
+						map.put(COMMUNITY_FIELD,new CommunityNodeController(n,false));
 						yearengine.generateTemplate(map, String.valueOf(n.getId()));
 					} else {
 						map.put(NODE_FIELD, new NodeController(n));
-						map.put(COMMUNITY_FIELD,new CommunityNodeController(n));
+						map.put(COMMUNITY_FIELD,new CommunityNodeController(n,false));
 						engine.generateTemplate(map, String.valueOf(n.getId()));
 					}
 					
@@ -164,7 +184,7 @@ public class GenerateWeb {
 
 			TemplateEngine indexengine = new TemplateEngine(indexout, template,
 					TemplateEngine.INDEXTEMPLATE);
-
+			if(!yearOnly) {
 			// Index out
 			
 			for (Character k : index.keySet()) {
@@ -194,13 +214,63 @@ public class GenerateWeb {
 			map.put(LINKS_FIELD, links);
 			charsEngine.generateTemplate(map, INDEX_HTML);
 			map.clear();
-
+			}
 		} else {
 
 			System.out
 					.println("Usage: Author <db_path> <templatedir> <htmldir>");
 		}
 
+	}
+
+	
+	
+	private static Map<String,Integer> getConductanceDistribution(Node n) {
+		
+		Traverser communities=n.traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		Map<String,Integer> map=new TreeMap<String, Integer>();
+		map.put("0.00", new Integer(0));
+		map.put("0.1 >", new Integer(0));
+		map.put("0.1-0.2", new Integer(0));
+		map.put("0.2-0.3", new Integer(0));
+		map.put("0.3-0.4", new Integer(0));
+		map.put("0.4-0.5", new Integer(0));
+		map.put(">= 0.5", new Integer(0));
+		
+		for (Node node : communities) {
+			if(node.hasProperty("conductance")) { 
+				double conductance=(Double) node.getProperty("conductance");
+				if(conductance == 0.00d ) {
+					increment("0.00",map);
+				}
+				if(conductance > 0.00d && conductance <0.1d) {
+					increment("0.1 >",map);
+				}
+				if(conductance >= 0.1d && conductance <0.2d) {
+					increment("0.1-0.2",map);
+				}
+				if(conductance >= 0.2d && conductance <0.3d) {
+					increment("0.2-0.3",map);
+				}
+				if(conductance >= 0.3d && conductance <0.4d) {
+					increment("0.3-0.4",map);
+				}
+				if(conductance >= 0.4d && conductance <0.5d) {
+					increment("0.4-0.5",map);
+				}
+				if(conductance >= 0.5d ) {
+					increment(">= 0.5",map);
+				}
+			}
+		}
+		
+		return map;
+	}
+
+
+
+	private static void increment(String string, Map<String, Integer> map) {
+		map.put(string, map.get(string)+1);		
 	}
 
 }

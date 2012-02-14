@@ -31,13 +31,19 @@
   </#list>
   </table>
   <#if author??>
+    <#if node.properties.top_level_community??>
       <h2>Neighbours</h2>
+      <#assign in_community=0>
+      <#assign not_in_community=0>
       <table>
-      <tr><th>Name</th><th>Neo4j-ID</th><th># shared publications</th></tr>
+      <tr><th>Name</th><th>Neo4j-ID</th><th># shared publications</th><th>Top-Level-Community</th></tr>
       <#list author.neighbours as neighbour>
-        <tr><td><a href="${neighbour.node.id?c}.html">${neighbour.node.name}</a></td><td>${neighbour.node.id?c}</td><td>${neighbour.count}</td></tr>
+        <tr bgcolor=<#if neighbour.node.properties.top_level_community=node.properties.top_level_community><#assign in_community=in_community+1>"#d4f3c8"<#else><#assign not_in_community=not_in_community+1>"#f3b3b9"</#if>><td><a href="${neighbour.node.id?c}.html">${neighbour.node.name}</a></td><td>${neighbour.node.id?c}</td><td>${neighbour.count}</td><td>${neighbour.node.properties.top_level_community?c}</td></tr>
       </#list>
+      <tr><td># Neighbours in same top-level Community  (<font color="green">green</font>) </td><td colspan=3>${in_community} </td></tr>
+      <tr><td># Neighbours in diffrent top-level Community (<font color="red">red</font>) </td><td colspan=3>${not_in_community} </td></tr>
       </table>
+      </#if>
   </#if>
    <#if community??>
       <h2>Children</h2>

@@ -78,6 +78,11 @@ cd modules
     mvn clean
     mvn package
  cd ..
+ # Conductance
+ cd conductance
+    mvn clean
+    mvn package
+ cd ..
 cd ..
 
 # Analyze
@@ -89,3 +94,5 @@ cd analyze
     mvn package
   cd ..
 cd ..
+
+

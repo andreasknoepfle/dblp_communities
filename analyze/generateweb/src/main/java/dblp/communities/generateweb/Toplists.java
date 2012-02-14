@@ -8,6 +8,10 @@ import java.util.PriorityQueue;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ReturnableEvaluator;
+import org.neo4j.graphdb.StopEvaluator;
+import org.neo4j.graphdb.Traverser;
+import org.neo4j.graphdb.Traverser.Order;
 
 import dblp.communities.db_interface.AuthorGraphRelationshipType;
 import dblp.communities.db_interface.DBConnector;
@@ -72,4 +76,65 @@ public class Toplists {
 		}
 		return queue;
 	}
+	
+	
+	public static List<DoubleValueWrapper> maxCommunityValue(Node node,String value,int topcount) {
+		PriorityQueue<DoubleValueWrapper> prio=maxCommunityValueRecursive(node, value, topcount);
+		ArrayList<DoubleValueWrapper> array=new ArrayList<DoubleValueWrapper>();
+		for(int i=0;i<topcount && (!prio.isEmpty());i++) {
+			array.add(prio.remove());
+		}
+		return array;
+	}
+	
+	public static List<DoubleValueWrapper> maxTopLevelCommunityValue(Node root,String value,int topcount) {
+		Traverser years=root.traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		PriorityQueue<DoubleValueWrapper> queue=new PriorityQueue<DoubleValueWrapper>();
+		for (Node child : years) {
+			Traverser communities=child.traverse(Order.BREADTH_FIRST, StopEvaluator.DEPTH_ONE, ReturnableEvaluator.ALL_BUT_START_NODE, AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+			for (Node node : communities) {
+				if(node.hasProperty(value)) {
+					double val=(Double)node.getProperty(value);
+					if(val!=0L)
+						queue.add(new DoubleValueWrapper( val,node.getId(),null));
+				}
+			}
+		}
+		ArrayList<DoubleValueWrapper> array=new ArrayList<DoubleValueWrapper>();
+		for(int i=0;i<topcount && !queue.isEmpty();i++) {
+			
+			array.add(queue.remove());
+		}
+	
+		return array;
+	}
+	
+	private static PriorityQueue<DoubleValueWrapper> maxCommunityValueRecursive(Node node,String value,int topcount) {
+		
+		Iterable<Relationship> rel = node.getRelationships(
+				AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING);
+		Iterator<Relationship> iterator=rel.iterator();
+		PriorityQueue<DoubleValueWrapper> queue=new PriorityQueue<DoubleValueWrapper>();
+		
+		while (iterator.hasNext()) {
+	
+				Relationship relation = iterator.next();
+				Node child=relation.getStartNode();
+				if(!child.getRelationships(AuthorGraphRelationshipType.BELONGS_TO, Direction.INCOMING).iterator().hasNext()) {
+						if(node.hasProperty(value)) {
+							queue.add(new DoubleValueWrapper( (Double)node.getProperty(value),child.getId(),null));
+						}
+						return queue;
+				} else {
+					PriorityQueue<DoubleValueWrapper> subqueue=maxCommunityValueRecursive(child,value,topcount);
+					for(int i=0;i<topcount && (!subqueue.isEmpty());i++) {
+						
+						queue.add(subqueue.remove());
+					}
+				}
+			
+		}
+		return queue;
+	}
+	
 }

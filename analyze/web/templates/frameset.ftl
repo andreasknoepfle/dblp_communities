@@ -11,6 +11,6 @@
   </#list>
 <br><br>
 
-<iframe id="content" name="content" src="nodes/${node.id}.html" width="100%" height="90%" marginheight="0" marginwidth="0" frameborder="0" />
+<iframe id="content" name="content" src="nodes/${node.id?c}.html" width="100%" height="90%" marginheight="0" marginwidth="0" frameborder="0" />
 </body>
 </html>

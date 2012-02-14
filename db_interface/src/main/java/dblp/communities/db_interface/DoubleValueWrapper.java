@@ -12,6 +12,9 @@ public class DoubleValueWrapper implements Comparable<DoubleValueWrapper>{
 		this.name=name;
 	}
 	public String getName() {
+		if(name==null) {
+			return String.valueOf(getId());
+		}
 		return name;
 	}
 	public double getValue() {
