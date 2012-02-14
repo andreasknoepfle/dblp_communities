@@ -107,37 +107,56 @@ Im Folgenden werden die Messungen näher beschrieben. Dabei wird zuerst auf die M
 
 \subsection{Ergebnisse der Messungen}
 
+Im Folgenden werden die Ergebnisse der Messungen dargestellt. Dabei wurden für die Messungen immer die \textit{Top-Level-Communities} verwendet.
 
-
-	\subsection{Größe}
+	\subsubsection{Größe}
 	
-In Abbildung \ref{img:community_size} ist die Größenverteilung der Communities dargestellt. Dazu wurde ein Kreisdiagramm gewählt in welchem alle Communities, welche weniger als 5000 Autoren besitzen, zusammen gefasst werden. 
+In Abbildung \ref{img:community_size} ist die Größenverteilung der Communities dargestellt. Dazu wurde ein Kreisdiagramm gewählt in welchem alle Communities, welche weniger als 5000 Autoren besitzen, zusammen gefasst werden. Die Beschriftungen des Kreisdiagramms zeigen für die Communities zuerst die ID, mit welcher sie in der Datenbank identifiziert werden können, und danach die genaue Anzahl der Autoren in der Community.
+
 	\begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{results/size_dist}
 					} \newcaption{Größenverteilung der Communities}
 					\label{img:community_size}
 	\end{center}
 	
-
-Die größte Community beinhaltet 83723 Autoren.
+Die größte Community beinhaltet 83723 Autoren. Es haben 43854 Communities weniger als 5000 Autoren. Zusammen sind 268304 Autoren in diesen 43854 Communities verteilt, da es sehr viele Communities gibt mit nur wenigen Autoren. 
 	
 
-	\subsection{Conductance}
+	\subsubsection{Conductance}
+
+	Abbildung \ref{img:conductance_dist} zeigt die Verteilung der Conductance Werte über die Communities. Auf der vertikalen Achse ist die Anzahl der Communities angegeben. Es haben 43529 Communities eine Conductance von 0 und werden deshalb auf der Skala nicht abgebildet, da sonst die anderen Wertebereiche nicht mehr erkennbar wären. Die Conductance-Werte sind in jeweils 0,1 langen Intervall-Schritten zusammengefasst. Zusätzlich wird alles über einen Wert von 0,5 zusammengefasst.
 	
 	\begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{results/conductance_dist}
 					} \newcaption{Conductance-Verteilung der Communities}
-					\label{img:conductance_dist}
+					\label{img:conductance_dist} 
+					
+					( 43529 Communities haben eine Conductance von 0 )
+					
 	\end{center}
+	
+	
+	Die nächste Abbildung \ref{img:conductance_vs_authors} zeigt nun das Verhältnis der Größe einer Community zu dessen Conductance Wert. Der größte Teil (43529) aller Communities ist bei dem Wert 0 abgebildet. Es ist zu erkennen, dass es keine größere Community mit einer Conductance von 0 gibt.
+
 	\begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{results/conductance_vs_num_authors}
 					} \newcaption{Conductance abhängig von der Größe der Communities}
 					\label{img:conductance_vs_authors}
 	\end{center}
 
-	
+	Eine einzige Community besitzt einen Conductance Wert größer 1 (mehr Kanten nach Außen als innerhalb der Community).
 
 \subsection{ Analyse der Ergebnisse }
 
+Eine Große Anzahl an Communities sind sehr klein und viele von diesen kleinen Communities haben auch eine sehr kleine Conductance oder sogar den Wert 0.
+Eine Conductance von 0 bedeutet, dass diese Communities keine Kanten nach Außen besitzen und komplett isoliert sind. 
+
+Mithilfe der Abbildung \ref{img:conductance_vs_authors} ist zu erkennen, dass keine größeren Communities eine conductance von 0 aufweisen. Dies bedeutet, dass keine größere Communty existiert, welche komplett von den anderen Communities isoliert ist.
+
+Eine einzelne Community besitzt einen Conductance Wert größer Eins.\\
+ Wie konnte diese Community vom Community-detection-Algorithmus als Community erkannt werden, wenn mehr Kanten aus der Community heraus gehen, als in der Community vorhanden sind?\\
+Dies könnte sich dadurch erklären, dass der Community Algorithmus auch das Gewicht der Kanten (Anzahl an Publikationen) verwendet, um Communities zu erkennen. Dadurch könnte eine Community erkannt werden, welche stark gewichtete Kanten innerhalb der Community besitzt, aber die Anzahl der Kanten nach außen größer ist. \\\\
+
 % { Diskussion }
 
+Durch die Größe und die Conductance der Communities können diese charakterisiert werden. Dabei ist kein direktes Verhältnis zwischen Größe und Conductance einer Community erkennbar.
