@@ -22,7 +22,7 @@
 	Tobias Schmid, Andreas Knöpfle \\ 
 	\\ 
 	Fachbereich Informatik \\ 
-	Freie Universitt Berlin \\ 
+	Freie Universität Berlin \\ 
 	Takustr. 9 \\
 	14195 Berlin \\
 	tobi@schmidies.de \\
@@ -33,8 +33,10 @@
 \maketitle
 
 \begin{abstract}
-Im Rahmen einer Semersterarbeit werden die Metadaten des DBLP-Datensatzes analysiert. Diese Metadaten enthalten Informationen über die in der DBLP-Datenbank gespeicherten wissenschaftlichen Publikationen. Auf dieser Grundlage wird ein Co-Author-Graph erzeugt, der die im Datensatz auftretenden Autoren über ihre gemeinsamen Publikationen verbindet. Es wird analysiert, ob Gemeinschaften (Communities) unter den Autoren ausgemacht werden können und welche Rollen die Autoren innerhalb ihrer Gemeinschaften übernehmen. Abschließend wird nach einer geeigneten Möglichkeit gesucht den Co-Author-Graphen und die Ergebnisse der Analyse auf geeignete Weise zu visualisieren. 
+Im Rahmen dieser Ausarbeitung werden die Metadaten des DBLP-Datensatzes analysiert. Diese Metadaten enthalten Informationen über die in der DBLP-Datenbank gespeicherten wissenschaftlichen Publikationen. Auf dieser Grundlage wird ein Co-Author-Graph erzeugt, der die im Datensatz auftretenden Autoren über ihre gemeinsamen Publikationen verbindet. Es wird analysiert, ob Gemeinschaften (Communities) unter den Autoren ausgemacht werden können und welche Rollen die Autoren innerhalb ihrer Gemeinschaften übernehmen. Abschließend wird nach einer geeigneten Möglichkeit gesucht den Co-Author-Graphen und die Ergebnisse der Analyse auf geeignete Weise zu visualisieren. 
 \end{abstract}
+\newpage
+\tableofcontents
 
 \include{chapter/einleitung}
 \include{chapter/ausgangssituation}
@@ -48,10 +50,10 @@ Im Rahmen einer Semersterarbeit werden die Metadaten des DBLP-Datensatzes analys
 
 \include{chapter/abkuerzungen}
 
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\listoffigures
 
-\nocite{dblp_org}
-\nocite{dblp_xml}
-\nocite{conductance_formel}
+\newpage
 
 \bibliographystyle{alphadin}
 \bibliography{dblp_communities}

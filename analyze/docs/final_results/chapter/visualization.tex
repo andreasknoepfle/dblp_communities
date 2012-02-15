@@ -1,16 +1,17 @@
 \section{Visualisierung des Co-Autor-Graphen}
-Um Informationen über einzelne Autoren und deren Communities aus dem Co-Autor-Graphen gewinnen zu können muss der Co-Author-Graph auf geeignete Art visualisiert werden. Daher wird versucht folgende Frage zu beantworten: 
+Um Informationen über einzelne Autoren und deren Communities aus dem Co-Autor-Graphen gewinnen zu können muss der Co-Autor-Graph auf geeignete Art visualisiert werden. Daher wird versucht folgende Frage zu beantworten: 
 
  \begin{center}
 \textit{Lässt sich das Umfeld eines Autors im Co-Autor-Graphen und seine Community visualisieren?}
 \end{center}
- Der in der Neo4j-Datenbank gespeicherte Graph kann zwar über die in Neo4j eingebauten Bordmittel bereits teilweise visualisiert werden, allerdings funktioniert die Visualisierung bei dieser Datenmenge nur stark eingeschränkt. Vor allem die Tatsache, dass bei dieser Art von Visualisierung der jeweils betrachtete Teil des Graphen dynamisch aus der Datenbank gelesen werden muss, schränkt den Gesamtprozess stark ein. \\
- Daher wird mit einem neuen Modul für die in Abschnitt \ref{randbendingingen} beschriebene Applikation der gesamte Graph mit allen enthaltenen Knoten in eine statische \acs{HTML}-Struktur exportiert. 
- \subsection{Visualisierung des Graphen mit \acs{HTML}}
-  Abbildung \ref{img:web} zeigt eine der durch die vorher beschriebe Methode entstandenen \acs{HTML}-Seiten. Die einzelnen Autoren untereinander enthalten \acs{HTML}-Verlinkungen zu allen Nachbarautoren und der Communities (pro jede Hierarchieebene eine) denen sie angehören. 
+ Der in der Neo4J-Datenbank gespeicherte Graph kann zwar über die in Neo4J eingebauten Bordmittel bereits teilweise visualisiert werden, allerdings funktioniert die Visualisierung bei dieser Datenmenge nur stark eingeschränkt. Vor allem die Tatsache, dass bei dieser Art von Visualisierung der jeweils betrachtete Teil des Graphen dynamisch aus der Datenbank gelesen werden muss, schränkt den Gesamtprozess stark ein. \\
+ Daher wird mit einem neuen Modul für die in Abschnitt \ref{randbendingingen} beschriebene Applikation der gesamte Graph mit allen enthaltenen Knoten in eine statische \acs{HTML}-Struktur exportiert. \\
+ 
+ 
+  Abbildung \ref{img:web} zeigt eine der durch die vorher beschriebe Methode entstandenen \acs{HTML}-Seiten. Die einzelnen Autoren untereinander enthalten \acs{HTML}-Verlinkungen zu allen Nachbarautoren und der Communities (pro Hierarchieebene eine) denen sie angehören. 
  \begin{center}
 					\hpic{\includegraphics[width=1\textwidth]{images/web}
-					} \newcaption{HTML-Darstellung vom Autorknoten Paul Erdös}
+					} \newcaption{HTML-Darstellung vom Autor-Knoten Paul Erdös}
 					\label{img:web}
 	\end{center}
   Diese Art der Visualisierung verhindert, dass der Graph bei Betrachtung dynamisch aus der Datenbank geladen werden muss, da dies bereits zum Zeitpunkt des \acs{HTML}-Exports geschieht. Auf diese Art kann das Umfeld eines Autors effizient und schnell durchsucht werden. Durch einen alphabetischen Index können Autoren schnell gefunden und analysiert werden. 

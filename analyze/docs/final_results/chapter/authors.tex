@@ -1,17 +1,17 @@
 
 \section{Autoren}
 
-Durch die im Abschnitt \ref{communities} gefundenen Communities kann man jetzt auch die Beziehung 
+Durch die im Abschnitt \ref{communities} gefundenen Communities kann man nun auch die Beziehung 
 eines Autors zu der ihm zugeordneten Community betrachten. \\
 
 % {Teilfrage: Sind verschieden Rollenverteilungen unter den Autoren einer Community erkennbar ?}
-In diesem Abschnitt wird untersucht ob verschiedene Rollenverteilungen unter den Autoren einer Community erkennbar sind.
+In diesem Abschnitt wird untersucht, ob verschiedene Rollenverteilungen unter den Autoren einer Community erkennbar sind.
 Falls verschiedene Rollenverteilungen auftreten, soll festgestellt werden, welche Rollen die Autoren einnehmen. Zusätzlich könnten die Rollen der Autoren, welche am 
 meisten publizieren, betrachtet werden. \\
 
 % { Methoden }
 
-Um die Autoren mit verschiedenen Rollen charakterisieren zu können, werden die in \cite{hubsconnectors} beschriebene Klassifizierung von Knoten verwendet. Für diese Klassifizierung muss für jeden Knoten der \textit{Within-module degree} (z-score) und der \textit{Participation coefficient} berechnet werden. 
+Um die Autoren mit verschiedenen Rollen charakterisieren zu können, werden die in \cite{hubsconnectors} beschriebene Klassifizierung von Knoten verwendet. Für diese Klassifizierung muss für jeden Knoten der \textit{Within-module-degree} (z-score) und der \textit{Participation coefficient} berechnet werden. 
 
 \subsection{Metriken eines Autors}
 
@@ -49,28 +49,28 @@ In diesem Modell wird zwischen folgenden Rollen unterschieden (Es wurde versucht
 
 Zur Klassifizierung der Autor-Knoten im Co-Autor-Graphen, wird für jeden Knoten die Community betrachtet in der er sich befindet (Top-Level-Community). 
 
-\subsubsection{Within-module degree}
+\subsubsection{Within-module-degree}
 
 
-Der Within-module degree eines Autors ist durch folgende Formel \cite[p.84]{conductance} bestimmt: \\
+Der Within-module degree eines Autors ist durch folgende Formel \cite{hubsconnectors} bestimmt: \\
 
 \begin{center}
 \hpic{\includegraphics[width=0.7\textwidth]{images/with_in_module}
-					} \newcaption{Formel zur Berechnung des Within-module degree}
+					} \newcaption{Formel zur Berechnung des Within-module-degree}
 					\label{form:Within-module-form  }
-					Quelle:(\cite{conductance})
+					Quelle:(\cite{hubsconnectors})
 \end{center}
 
 
-\subsubsection{Participation coefficient}
+\subsubsection{Participation-coefficient}
 
-Der Participation coefficient eines Autors ist durch folgende Formel \cite[p.84]{conductance} bestimmt: \\
+Der Participation-coefficient eines Autors ist durch folgende Formel \cite{hubsconnectors} bestimmt: \\
 
 \begin{center}
 \hpic{\includegraphics[width=0.7\textwidth]{images/part_coeff}
-					} \newcaption{Formel zur Berechnung des Participation coefficient}
+					} \newcaption{Formel zur Berechnung des Participation-coefficient}
 					\label{form:Participation-coefficient-form  }
-					Quelle:(\cite{conductance})
+					Quelle:(\cite{hubsconnectors})
 
 \end{center}
 
@@ -79,7 +79,7 @@ Der Participation coefficient eines Autors ist durch folgende Formel \cite[p.84]
 
 \subsection{Ergebnisse der Messungen}
 
-In Abbildung \ref{fig:hub_con_dist} ist die Verteilung zwischen \textit{Hubs} und \textit{Connectors} zu erkennen. Die Anzahl der Autoren ist dabei in Tausend angegeben. 
+In Abbildung \ref{fig:hub_con_dist} ist die Verteilung zwischen \textit{Hubs} und \textit{Connectors} zu erkennen. 
 
 \begin{center}
 					\hpic{\includegraphics[width=0.7\textwidth]{results/roles_hub_con}
@@ -87,7 +87,7 @@ In Abbildung \ref{fig:hub_con_dist} ist die Verteilung zwischen \textit{Hubs} un
 					\label{fig:hub_con_dist}
 \end{center}
 
-Abbildung \ref{fig:r1_r7_dist} zeigt nun die Verteilung auf alle Rollen. Es wurden zu jeder definierten Rolle Autoren gefunden. Dabei gibt es am Meisten \textit{R1 Autoren} und am wenigsten \textit{R7 Autoren}.
+Abbildung \ref{fig:r1_r7_dist} zeigt die Verteilung auf alle Rollen. Es wurden zu jeder definierten Rolle Autoren gefunden. Dabei gibt es am meisten \textit{R1 Autoren} und am wenigsten \textit{R7 Autoren}.
 
 
 \begin{center}
@@ -100,7 +100,7 @@ Abbildung \ref{fig:r1_r7_dist} zeigt nun die Verteilung auf alle Rollen. Es wurd
 
 Folgende Tabelle zeigt verschiedene Details der meist publizierenden Autoren (Top 16 der DBLP - Stand 26.01.2012). Dabei beziehen sich die Conductance und die Größe auf die Community in der sich der Autor befindet.
 
-\begin{table}
+\begin{table}[htb!]
     \begin{tabular}{|l|l|l|l|l|}
         \hline
         \textbf{Name }    & \textbf{Anzahl Publikationen} &\textbf{ Rolle} & \textbf{Conductance}   & \textbf{Größe }    \\ \hline 
@@ -122,7 +122,10 @@ Folgende Tabelle zeigt verschiedene Details der meist publizierenden Autoren (To
         Hans-Peter Seidel & 494                  & R6    & 0,756                         & 17123                    \\
         \hline
     \end{tabular}
+    \caption{Meist publizierende Autoren}
+\label{tab:mostProlific}
 \end{table}
+
 
 
 \subsection{ Analyse der Messergebnisse }
